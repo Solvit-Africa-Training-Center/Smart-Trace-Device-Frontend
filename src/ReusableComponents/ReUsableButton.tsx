@@ -1,0 +1,28 @@
+import React from "react";
+
+interface ButtonProps {
+  label: string;
+  onClick?: () => void;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+}
+
+const ReUsableButton: React.FC<ButtonProps> = ({
+  label,
+  onClick,
+  type = "button",
+  disabled = false,
+}) => {
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+     className="w-full sm:w-auto px-8 sm:px-10 py-4 text-white bg-gray-900  border-1 border-white font-medium text-base sm:text-lg rounded-md hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white ">
+    
+      {label}
+    </button>
+  );
+};
+
+export default ReUsableButton;
