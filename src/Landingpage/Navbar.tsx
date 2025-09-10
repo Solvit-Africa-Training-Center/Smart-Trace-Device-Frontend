@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Mail, Phone, Menu, X} from "lucide-react";
 import { FaFacebookF, FaLinkedinIn, FaXTwitter, FaYoutube } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
+import LandingAuth from "./auth";
 
 interface HeaderProps {}
 
@@ -152,9 +153,14 @@ const Navbar: React.FC<HeaderProps> = () => {
               </nav>
 
               {/* Login Button */}
-              <button className="bg-slate-500 text-white px-6 py-2 font-normal text-sm  hover:bg-slate-600 rounded-md">
+                <Link to="/LandingAuth">
+              <button 
+              className="bg-slate-500 text-white px-6 py-2 font-normal text-sm  hover:bg-slate-600 rounded-md">
+               
                 Login
+               
               </button>
+              </Link>
             </div>
 
             {/* Mobile menu button */}
