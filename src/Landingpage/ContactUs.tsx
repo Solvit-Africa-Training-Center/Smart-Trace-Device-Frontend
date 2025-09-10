@@ -1,4 +1,5 @@
 import React from "react";
+import { PiOfficeChair } from "react-icons/pi";
 
 interface ContactPageProps {}
 
@@ -20,14 +21,19 @@ const ContactUs: React.FC<ContactPageProps> = () => {
                 Get In Touch
               </h1>
               <p className="text-gray-600 leading-relaxed">
-                We are always ready to to help you and <br/> answer your question We
-                are always ready to to help you and answer your question
+                We are always ready to to help you and <br /> answer your
+                question We are always ready to to help you and answer your
+                question
               </p>
             </div>
 
             {/* Head Office */}
             <div className="flex items-start space-x-4">
-              <div className="w-16 h-16 rounded-full border border-gray-300 flex-shrink-0"></div>
+                <div className="w-16 h-16 rounded-full border border-gray-300 flex items-center justify-center flex-shrink-0">
+                <div className="w-6 h-6 text-gray-600">
+                  <PiOfficeChair />
+                  </div>
+              </div>
               <div>
                 <h3 className="text-xl font-normal text-gray-900 mb-2">
                   Head Office

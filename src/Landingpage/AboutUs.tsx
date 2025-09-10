@@ -4,8 +4,10 @@ import ServiceCard from "../ReusableComponents/ServiceCard";
 import { FaMobileAlt } from "react-icons/fa";
 import { BsBook } from "react-icons/bs";
 import homei from '../assets/images/home.jpg'
+import mission from "../assets/images/mission.png";
 import ReUsableButton from "../ReusableComponents/ReUsableButton";
 import ContactUs from "./ContactUs";
+import TestimonialComponent from "./Testmonial";
 export default function About() {
   return (
     <div>
@@ -19,9 +21,11 @@ export default function About() {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <p className="text-xl   font-light text-white leading-tight mb-8 sm:mb-12">
-          Connect Lost Gadgets With Their Rightful Owners <br />A safer way to
-          report, find, and verify electronic devices.
+        <p className=" font-medium text-[25px]  text-white leading-tight mb-3 sm:mb-3">
+          Connect Lost Gadgets With Their Rightful Owners
+          <p className=" font-normal text-[20px] mt-3">
+            A safer way to report, find, and verify electronic devices.
+          </p>
         </p>
         {/* Button container */}
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
@@ -33,14 +37,14 @@ export default function About() {
       {/* Device Recovery Section */}
       <div className="bg-gray-50 py-8 px-4 sm:py-12 sm:px-6 lg:py-16 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-7 items-center">
             {/* Left side - Content */}
-            <div className="order-2 lg:order-1 space-y-6">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-light text-gray-900 leading-tight">
+            <div className="order-2 lg:order-1 space-y-4">
+              <h1 className="text-3xl sm:text-3xl lg:text-3xl font-medium text-gray-900 ">
                 Stop Fraud, Reunite Device And Build Trust
               </h1>
 
-              <p className="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-xl">
+              <p className="text-size-md sm:text-size-md text-gray-600 leading-relaxed max-w-xl">
                 Digitalization has enabled our recovery platform to harness the
                 power of data matching. By collecting and analyzing device
                 information, we can successfully reunite owners with their lost
@@ -53,40 +57,13 @@ export default function About() {
             </div>
 
             {/* Right side - Image and Stats */}
-            <div className="order-1 lg:order-2 relative">
+            <div className="order-1 lg:order-2 ">
               {/* Delivery person image */}
-              <div className="relative z-10 mb-8 lg:mb-0">
+              <div className="lg:mb-0">
                 <img
                   src={ChatGPT}
                   className="w-full max-w-sm mx-auto lg:max-w-md"
                 />
-              </div>
-
-              {/* Statistics cards */}
-              <div className="space-y-4 lg:absolute lg:right-0 lg:top-0 lg:space-y-6">
-                {/* Report Lost Device */}
-                <div className="bg-blue-600 text-white p-6 rounded-lg shadow-lg min-w-[240px]">
-                  <div className="text-sm font-medium mb-2">
-                    REPORT LOST DEVICE
-                  </div>
-                  <div className="text-4xl font-bold">10 +</div>
-                </div>
-
-                {/* Report Fund Device */}
-                <div className="bg-blue-600 text-white p-6 rounded-lg shadow-lg min-w-[240px]">
-                  <div className="text-sm font-medium mb-2">
-                    REPORT FUND DEVICE
-                  </div>
-                  <div className="text-4xl font-bold">51 +</div>
-                </div>
-
-                {/* People that got their devices */}
-                <div className="bg-blue-600 text-white p-6 rounded-lg shadow-lg min-w-[240px]">
-                  <div className="text-sm font-medium mb-2">
-                    PEOPLE THAT GOT THEIR DEVICES
-                  </div>
-                  <div className="text-4xl font-bold">42 +</div>
-                </div>
               </div>
             </div>
           </div>
@@ -94,10 +71,10 @@ export default function About() {
       </div>
 
       {/* Services Section */}
-      <div className="bg-gray-50 py-10 px-4 sm:py-10 sm:px-6 lg:py-10 lg:px-8">
+      <div className="bg-[#769EB81A] py-15 px-4 sm:py-15 sm:px-6 lg:py-15 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Section Title */}
-          <h2 className="text-center text-2xl sm:text-3xl lg:text-4xl font-normal text-gray-900 mb-20">
+          <h2 className="text-center text-2xl sm:text-2xl lg:text-2xl font-normal text-gray-900 mb-10">
             Our Services
           </h2>
 
@@ -122,74 +99,17 @@ export default function About() {
       </div>
 
       {/* Why We Exist Section */}
-      <div className="bg-white py-16 px-4 sm:py-20 sm:px-6 lg:py-24 lg:px-8">
+      <div className="bg-white py-16 px-4 sm:py-15 sm:px-6 lg:py-15 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Section Title */}
-          <h2 className="text-center text-2xl sm:text-3xl lg:text-4xl font-normal text-gray-900 mb-16 sm:mb-20 lg:mb-24">
+          <h2 className="text-center text-2xl sm:text-3xl lg:text-3xl font-normal text-gray-900 mb-1 sm:mb-1 lg:mb-1">
             WHY WE EXIST &amp;&amp; WHAT WE AIM FOR
           </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left side - Image and Stats */}
-            <div className="order-2 lg:order-1 relative">
-              {/* Main Image Composition */}
-              <div className="relative">
-                {/* Background images */}
-                <div className="flex items-center justify-center">
-                  {/* Woman in yellow coat */}
-                  <div className="relative w-64 h-80 bg-gradient-to-br from-amber-400 to-amber-500 rounded-lg overflow-hidden shadow-lg">
-                    <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-amber-600 opacity-90"></div>
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <div className="w-full h-32 bg-amber-600 rounded opacity-70"></div>
-                    </div>
-                  </div>
-
-                  {/* Phone with app mockup */}
-                  <div className="absolute -right-8 top-8 w-48 h-80 bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-gray-800">
-                    <div className="bg-blue-600 h-full relative">
-                      {/* App interface mockup */}
-                      <div className="absolute top-12 left-4 right-4">
-                        <div className="bg-white rounded-lg p-3 mb-3">
-                          <div className="text-xs text-gray-600 mb-1">
-                            Report &amp; Find Device
-                          </div>
-                          <div className="flex space-x-2">
-                            <div className="w-8 h-8 bg-yellow-400 rounded"></div>
-                            <div className="w-8 h-8 bg-gray-400 rounded"></div>
-                            <div className="w-8 h-8 bg-gray-400 rounded"></div>
-                          </div>
-                        </div>
-                        <div className="bg-white rounded-lg p-3 mb-3">
-                          <div className="text-xs text-gray-600 mb-1">
-                            Categories
-                          </div>
-                          <div className="grid grid-cols-3 gap-2">
-                            <div className="text-xs text-center">
-                              <div className="w-6 h-6 bg-blue-400 rounded mx-auto mb-1"></div>
-                              <div>Phone</div>
-                            </div>
-                            <div className="text-xs text-center">
-                              <div className="w-6 h-6 bg-green-400 rounded mx-auto mb-1"></div>
-                              <div>Laptop</div>
-                            </div>
-                            <div className="text-xs text-center">
-                              <div className="w-6 h-6 bg-purple-400 rounded mx-auto mb-1"></div>
-                              <div>Watch</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Experience Badge */}
-                <div className="absolute -bottom-6 left-8 bg-white rounded-lg shadow-lg p-4 border">
-                  <div className="text-3xl font-bold text-blue-600">12+</div>
-                  <div className="text-xs text-gray-600">Years Of Service</div>
-                  <div className="text-xs text-gray-600">Experience</div>
-                </div>
-              </div>
+            <div className="">
+             <img src={mission} alt="" />
             </div>
 
             {/* Right side - Content */}
@@ -306,8 +226,8 @@ export default function About() {
           </div>
         </div>
       </div>
-       
-      <ContactUs/>
+      <TestimonialComponent />
+      <ContactUs />
     </div>
   );
 }

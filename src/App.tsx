@@ -1,6 +1,6 @@
 import './App.css'
 import { LostItemsProvider } from './context/ItemContext'
-import Landing from './Landingpage/Landing'
+import Landing from './Landingpage/LandingRaute'
 
 function App() {
 

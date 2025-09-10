@@ -26,20 +26,22 @@ const LostItem: React.FC = () => {
             backgroundRepeat: "no-repeat",
           }}
         >
-          <p className="text-xl font-light text-white leading-tight mb-8 sm:mb-12">
-            Connect Lost Gadgets With Their Rightful Owners <br />A safer way to
-            report, find, and verify electronic devices.
+          <p className="text-2xl w-1/2 font-light text-white leading-tight mb-8 sm:mb-12">
+            A safer way to report, find, and verify electronic devices.
           </p>
         </div>
 
         <div className="w-full p-8">
           <div className="max-w-7xl mx-auto mb-8 space-y-4">
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold"> Browse Items Lost Reported </h1>
-                        <input
-                            placeholder="Browse Items Lost"
-                            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
+              <h1 className="text-2xl font-bold">
+                {" "}
+                Browse Items Lost Reported{" "}
+              </h1>
+              <input
+                placeholder="Browse Items Lost"
+                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
             <p>
               Statistics show 85% of lost property (phones, bags, pets, luggage,

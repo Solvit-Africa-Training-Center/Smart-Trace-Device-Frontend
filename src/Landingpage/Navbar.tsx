@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { Mail, Phone, Menu, X} from "lucide-react";
 import { FaFacebookF, FaLinkedinIn, FaXTwitter, FaYoutube } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 interface HeaderProps {}
 
 const Navbar: React.FC<HeaderProps> = () => {
+  const [openBrowseritem, setopenBrowseritem] = useState(false);
+    const [open, setOpen] = useState(false);
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   const handleMobileMenuToggle = (): void => {
@@ -65,43 +69,79 @@ const Navbar: React.FC<HeaderProps> = () => {
             {/* Desktop Navigation and Login */}
             <div className="hidden lg:flex items-center space-x-12">
               <nav className="flex items-center space-x-12">
-                <a
-                  href="#"
+                <Link to={"home"}
                   className="text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide"
                 >
                   Home
-                </a>
+                </Link>
                 <div className="relative">
-                  <Link to={'/founditem'} className="text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide flex items-center">
+                  {/* Trigger button */}
+                  <button
+                    onClick={() => setOpen(!open)}
+                    className="text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide flex items-center"
+                  >
                     Submit Items
-                    <svg
-                      className="ml-2 w-3 h-3"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </Link>
+                    <IoMdArrowDropdown
+                      className={`ml-2 mt-1.5 w-5 h-5 transform transition-transform ${
+                        open ? "rotate-180" : "rotate-0"
+                      }`}
+                    />
+                  </button>
+
+                  {/* Dropdown content */}
+                  {open && (
+                    <div className="absolute mt-2 w-40 bg-white border rounded-md shadow-lg z-50">
+                      <Link
+                        onClick={()=>setOpen(false)}
+                        to="reportlostitem"
+                        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                      >
+                        Lost Items
+                      </Link>
+                      <Link
+                        onClick={()=>setOpen(false)}
+                        to="reportfounditem"
+                        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                      >
+                        Found Items
+                      </Link>
+                    </div>
+                  )}
                 </div>
                 <div className="relative">
-                  <Link to={'lostitem'} className="text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide flex items-center">
-                    Browser Items
-                    <svg
-                      className="ml-2 w-3 h-3"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </Link>
+                  {/* Trigger button */}
+                  <button
+                    onClick={() => setopenBrowseritem(!openBrowseritem)}
+                    className="text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide flex items-center"
+                  >
+                    Browse Items
+                    <IoMdArrowDropdown
+                      className={`ml-2 mt-1.5 w-5 h-5 transform transition-transform ${
+                        openBrowseritem ? "rotate-180" : "rotate-0"
+                      }`}
+                    />
+                  </button>
+
+                  {/* Dropdown content */}
+                  {openBrowseritem && (
+                    <div className="absolute mt-2 w-40 bg-white border rounded-md shadow-lg z-50">
+                      <Link
+                        onClick={()=>setopenBrowseritem(false)}
+                        to="lostitem"
+                        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                      >
+                        Lost Items
+                      </Link>
+                      <Link
+                        onClick={()=>setopenBrowseritem(false)}
+                        to="founditem"
+                        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                      >
+                        Found Items
+                      </Link>
+                     
+                    </div>
+                  )}
                 </div>
                 <a
                   href="#"
