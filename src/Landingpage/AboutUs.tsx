@@ -1,5 +1,5 @@
 import { LuBadgeCheck } from "react-icons/lu";
-import ChatGPT from "../assets/images/ChatGPT.png";
+import ChatGPT from "../assets/images/cotton.jpeg";
 import ServiceCard from "../ReusableComponents/ServiceCard";
 import { FaMobileAlt } from "react-icons/fa";
 import { BsBook } from "react-icons/bs";
@@ -51,8 +51,8 @@ export default function About() {
                 electronics while preventing the sale of stolen device
               </p>
 
-              <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-3 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                READ MORE
+              <button className="bg-primaryColor-100 hover:bg-primaryColor-400 hover:text-primaryColor-100 text-white font-medium px-8 py-3 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                Read More
               </button>
             </div>
 
@@ -218,8 +218,8 @@ export default function About() {
 
               {/* Discover More Button */}
               <div className="pt-4">
-                <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-3 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                  DISCOVER MORE
+                <button className="bg-primaryColor-100 hover:bg-primaryColor-400 hover:text-primaryColor-100 text-white font-medium px-8 py-3 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                  Discover More
                 </button>
               </div>
             </div>

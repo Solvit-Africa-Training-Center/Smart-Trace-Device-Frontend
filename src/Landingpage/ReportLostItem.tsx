@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import homei from "../assets/images/home.jpg";
+import homei from "../assets/images/lostitempage.jpg";
 import { Upload } from "lucide-react";
 import ReUsableInput from "../ReusableComponents/ReUsableInput";
 import ReUsableSelect from "../ReusableComponents/ReUsableSelect";
@@ -193,8 +193,15 @@ const ReportLostItem: React.FC = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <p className="text-2xl w-1/2 font-light text-white leading-tight mb-8 sm:mb-12">
-          A safer way to report, find, and verify electronic devices.
+        <p className="  text-white  ">
+          <h1 className=" font-bold text-size-2xl">
+            Report your Lost Device. Help Us Stop Theft.
+          </h1>
+          <p className=" text-size-lg">
+            Reporting your lost or stolen device helps protect everyone by
+            making it harder to resell and easier for a finder to return it to
+            you.
+          </p>{" "}
         </p>
       </div>
 
@@ -220,7 +227,7 @@ const ReportLostItem: React.FC = () => {
         <div className="bg-white rounded-lg shadow-sm mb-8">
           <div className="p-6 lg:p-8">
             <h2 className="text-xl lg:text-2xl font-semibold text-gray-900 mb-2">
-              Found Item Information
+              LostItem Information
             </h2>
             <p className="text-gray-600 mb-8 text-sm lg:text-base">
               Please be descriptive when reporting found, the more information
@@ -424,8 +431,8 @@ const ReportLostItem: React.FC = () => {
               Contact Information
             </h2>
             <p className="text-gray-600 mb-8 text-sm lg:text-base">
-              Please be descriptive when reporting found, the more information
-              you give us the better chance when we
+              Your contact information is kept private and only shared if a
+              match is found with your permission.
             </p>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">

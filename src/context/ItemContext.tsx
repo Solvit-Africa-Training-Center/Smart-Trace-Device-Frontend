@@ -1,7 +1,7 @@
 // LostItemsContext.tsx
 import React, { createContext, useContext, type ReactNode, } from "react";
 import type { LostItem, LostItemsContextType } from "../type/type";
-import imag1 from '../assets/images/Frame 401 (1).png'
+import imag1 from '../assets/images/Frame.png'
 import imag2 from'../assets/images/Frame 401 (2).png'
 import imag3 from '../assets/images/Frame 401 (3).png'
 import imag4 from '../assets/images/Frame 401 (4).png'

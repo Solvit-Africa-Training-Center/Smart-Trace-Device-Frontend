@@ -193,8 +193,16 @@ const ReportFoundItem: React.FC = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <p className="text-2xl w-1/2 font-light text-white leading-tight mb-8 sm:mb-12">
-          A safer way to report, find, and verify electronic devices.
+        {" "}
+        <p className="  text-white  ">
+          <h1 className=" font-bold text-size-2xl">
+            Found a Device? Do the Right Thing.{" "}
+          </h1>
+          <p className=" text-size-lg">
+            You've taken the first step to reuniting a lost device with its
+            rightful owner. Use our secure database to check if the device has
+            been reported lost or stolen.
+          </p>{" "}
         </p>
       </div>
 
@@ -424,8 +432,8 @@ const ReportFoundItem: React.FC = () => {
               Contact Information
             </h2>
             <p className="text-gray-600 mb-8 text-sm lg:text-base">
-              Please be descriptive when reporting found, the more information
-              you give us the better chance when we
+              Providing your details is optional but helps us facilitate the
+              return. We will not share your information publicly
             </p>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">

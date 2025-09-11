@@ -1,5 +1,6 @@
 import React from "react";
 import { PiOfficeChair } from "react-icons/pi";
+import ReUsableInput from "../ReusableComponents/ReUsableInput";
 
 interface ContactPageProps {}
 
@@ -29,10 +30,10 @@ const ContactUs: React.FC<ContactPageProps> = () => {
 
             {/* Head Office */}
             <div className="flex items-start space-x-4">
-                <div className="w-16 h-16 rounded-full border border-gray-300 flex items-center justify-center flex-shrink-0">
+              <div className="w-16 h-16 rounded-full border border-gray-300 flex items-center justify-center flex-shrink-0">
                 <div className="w-6 h-6 text-gray-600">
                   <PiOfficeChair />
-                  </div>
+                </div>
               </div>
               <div>
                 <h3 className="text-xl font-normal text-gray-900 mb-2">
@@ -81,52 +82,60 @@ const ContactUs: React.FC<ContactPageProps> = () => {
           </div>
 
           {/* Right Section - Contact Form */}
-          <div className="bg-white rounded-lg shadow-sm p-10">
-            <h2 className="text-2xl font-normal text-gray-900 mb-10">
+          <div className="bg-primaryColor-400 p-9">
+            <h2 className="text-2xl font-normal text-gray-900 mb-5">
               Leave Your Message
             </h2>
 
-            <div className="space-y-8">
+            <div className="space-y-4">
               {/* First Row */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <input
+                <ReUsableInput
                   type="text"
-                  placeholder="FIRST NAME"
-                  className="w-full px-5 py-4 border border-gray-300 rounded-md text-sm text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="First Name"
+                  name="firstName"
+                  value=""
+                  onChange={() => {}}
                 />
-                <input
+                <ReUsableInput
                   type="text"
-                  placeholder="SECOND NAME"
-                  className="w-full px-5 py-4 border border-gray-300 rounded-md text-sm text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Second Name"
+                  name="secondName"
+                  value=""
+                  onChange={() => {}}
                 />
               </div>
 
               {/* Second Row */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <input
+                <ReUsableInput
                   type="email"
-                  placeholder="EMAIL"
-                  className="w-full px-5 py-4 border border-gray-300 rounded-md text-sm text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Email"
+                  name="email"
+                  value=""
+                  onChange={() => {}}
                 />
-                <input
+                <ReUsableInput
                   type="text"
-                  placeholder="SUBJECT"
-                  className="w-full px-5 py-4 border border-gray-300 rounded-md text-sm text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Subject"
+                  name="subject"
+                  value=""
+                  onChange={() => {}}
                 />
               </div>
 
               {/* Message Field */}
               <textarea
-                placeholder="MESSAGE"
-                rows={8}
-                className="w-full px-5 py-4 border border-gray-300 rounded-md text-sm text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                placeholder="Message"
+                rows={6}
+                className="w-full px-5 py-4 border-[1.4px] border-primaryBoderColor rounded-md text-sm text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
               />
 
               {/* Submit Button */}
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="px-10 py-4 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                className="px-13 py-3 border-[1.4px] border-primaryBoderColor rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
               >
                 Submit
               </button>

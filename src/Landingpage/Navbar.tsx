@@ -1,19 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Mail, Phone, Menu, X} from "lucide-react";
 import { FaFacebookF, FaLinkedinIn, FaXTwitter, FaYoutube } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
+import logo from '../assets/images/logo.jpeg'
 
 interface HeaderProps {}
 
 const Navbar: React.FC<HeaderProps> = () => {
   const [openBrowseritem, setopenBrowseritem] = useState(false);
-    const [open, setOpen] = useState(false);
-
+  const [open, setOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  
+  const location = useLocation();
+
+  // Check if current path is in Submit Items dropdown
+  const isSubmitItemsActive = ['/reportlostitem', '/reportfounditem'].includes(location.pathname);
+  
+  // Check if current path is in Browse Items dropdown
+  const isBrowseItemsActive = ['/lostitem', '/founditem'].includes(location.pathname);
+
+  // Check for individual page states
+  const isHomeActive = location.pathname === '/home' || location.pathname === '/';
+  const isContactActive = location.pathname === '/contact';
+
+  // Keep dropdowns open if user is on related pages
+  useEffect(() => {
+    if (isSubmitItemsActive) {
+      setOpen(true);
+    }
+    if (isBrowseItemsActive) {
+      setopenBrowseritem(true);
+    }
+  }, [location.pathname, isSubmitItemsActive, isBrowseItemsActive]);
 
   const handleMobileMenuToggle = (): void => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleSubmitItemsToggle = () => {
+    // Only allow closing if not on an active page
+    if (!isSubmitItemsActive) {
+      setOpen(!open);
+    }
+  };
+
+  const handleBrowseItemsToggle = () => {
+    // Only allow closing if not on an active page
+    if (!isBrowseItemsActive) {
+      setopenBrowseritem(!openBrowseritem);
+    }
   };
 
   return (
@@ -57,30 +93,36 @@ const Navbar: React.FC<HeaderProps> = () => {
             {/* Logo */}
             <div className="flex-shrink-0">
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-slate-500 rounded flex items-center justify-center mr-4">
-                  <div className="w-6 h-6 border-2 border-white rounded-full"></div>
+                <div className=" w-20 h-5 bg-slate-500 rounded flex items-center justify-center mr-4">
+                  <img src={logo} alt="" className=" text-white" />
                 </div>
-                <span className="text-lg font-normal text-gray-800">
-                  CINCINNATI
-                </span>
               </div>
             </div>
 
             {/* Desktop Navigation and Login */}
             <div className="hidden lg:flex items-center space-x-12">
               <nav className="flex items-center space-x-12">
-                <Link to={"home"}
-                  className="text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide"
+                <Link
+                  to={"home"}
+                  className={`font-bold text-[14px] tracking-wide transition-colors ${
+                    isHomeActive 
+                      ? 'text-blue-500' 
+                      : 'text-slate-600 hover:text-blue-500'
+                  }`}
                 >
                   Home
                 </Link>
                 <div className="relative">
-                  {/* Trigger button */}
+                  {/* Submit Items Trigger button */}
                   <button
-                    onClick={() => setOpen(!open)}
+                    onClick={handleSubmitItemsToggle}
                     className="text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide flex items-center"
                   >
-                    Submit Items
+                    <p className={`hover:text-blue-500 font-bold text-[14px] tracking-wide transition-colors ${
+                      isSubmitItemsActive ? 'text-blue-500' : 'text-slate-600'
+                    }`}>
+                      Submit Items
+                    </p>
                     <IoMdArrowDropdown
                       className={`ml-2 mt-1.5 w-5 h-5 transform transition-transform ${
                         open ? "rotate-180" : "rotate-0"
@@ -88,20 +130,26 @@ const Navbar: React.FC<HeaderProps> = () => {
                     />
                   </button>
 
-                  {/* Dropdown content */}
+                  {/* Submit Items Dropdown content */}
                   {open && (
                     <div className="absolute mt-2 w-40 bg-white border rounded-md shadow-lg z-50">
                       <Link
-                        onClick={()=>setOpen(false)}
                         to="reportlostitem"
-                        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                        className={`block px-4 py-2 text-sm hover:bg-slate-100 transition-colors ${
+                          location.pathname === '/reportlostitem' 
+                            ? 'bg-blue-50 text-blue-600 font-medium' 
+                            : 'text-slate-700'
+                        }`}
                       >
                         Lost Items
                       </Link>
                       <Link
-                        onClick={()=>setOpen(false)}
                         to="reportfounditem"
-                        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                        className={`block px-4 py-2 text-sm hover:bg-slate-100 transition-colors ${
+                          location.pathname === '/reportfounditem' 
+                            ? 'bg-blue-50 text-blue-600 font-medium' 
+                            : 'text-slate-700'
+                        }`}
                       >
                         Found Items
                       </Link>
@@ -109,12 +157,16 @@ const Navbar: React.FC<HeaderProps> = () => {
                   )}
                 </div>
                 <div className="relative">
-                  {/* Trigger button */}
+                  {/* Browse Items Trigger button */}
                   <button
-                    onClick={() => setopenBrowseritem(!openBrowseritem)}
+                    onClick={handleBrowseItemsToggle}
                     className="text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide flex items-center"
                   >
-                    Browse Items
+                    <p className={`hover:text-blue-500 font-bold text-[14px] tracking-wide transition-colors ${
+                      isBrowseItemsActive ? 'text-blue-500' : 'text-slate-600'
+                    }`}>
+                      Browse Items
+                    </p>
                     <IoMdArrowDropdown
                       className={`ml-2 mt-1.5 w-5 h-5 transform transition-transform ${
                         openBrowseritem ? "rotate-180" : "rotate-0"
@@ -122,37 +174,46 @@ const Navbar: React.FC<HeaderProps> = () => {
                     />
                   </button>
 
-                  {/* Dropdown content */}
+                  {/* Browse Items Dropdown content */}
                   {openBrowseritem && (
                     <div className="absolute mt-2 w-40 bg-white border rounded-md shadow-lg z-50">
                       <Link
-                        onClick={()=>setopenBrowseritem(false)}
                         to="lostitem"
-                        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                        className={`block px-4 py-2 text-sm hover:bg-slate-100 transition-colors ${
+                          location.pathname === '/lostitem' 
+                            ? 'bg-blue-50 text-blue-600 font-medium' 
+                            : 'text-slate-700'
+                        }`}
                       >
                         Lost Items
                       </Link>
                       <Link
-                        onClick={()=>setopenBrowseritem(false)}
                         to="founditem"
-                        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                        className={`block px-4 py-2 text-sm hover:bg-slate-100 transition-colors ${
+                          location.pathname === '/founditem' 
+                            ? 'bg-blue-50 text-blue-600 font-medium' 
+                            : 'text-slate-700'
+                        }`}
                       >
                         Found Items
                       </Link>
-                     
                     </div>
                   )}
                 </div>
-                <a
-                  href="#"
-                  className="text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide"
+                 <Link
+                  to={"contact"}
+                  className={`font-bold text-[14px] tracking-wide transition-colors ${
+                    isContactActive 
+                      ? 'text-blue-500' 
+                      : 'text-slate-600 hover:text-blue-500'
+                  }`}
                 >
                   Contact Us
-                </a>
+                </Link>
               </nav>
 
               {/* Login Button */}
-              <button className="bg-slate-500 text-white px-6 py-2 font-normal text-sm  hover:bg-slate-600 rounded-md">
+              <button className="bg-slate-500 text-white px-6 py-2 font-normal text-sm  hover:bg-slate-600 rounded-md transition-colors">
                 Login
               </button>
             </div>
@@ -177,30 +238,109 @@ const Navbar: React.FC<HeaderProps> = () => {
         {isMobileMenuOpen && (
           <div className="lg:hidden bg-gray-50 border-t border-gray-200">
             <div className="px-4 py-4 space-y-3">
-              <a
-                href="#"
-                className="block text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide py-2"
+              <Link
+                to="home"
+                className={`block font-normal text-sm tracking-wide py-2 transition-colors ${
+                  isHomeActive 
+                    ? 'text-blue-500 font-medium' 
+                    : 'text-slate-600 hover:text-slate-800'
+                }`}
               >
                 HOME
-              </a>
-              <a
-                href="#"
-                className="block text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide py-2"
-              >
-                SUBMIT ITEMS
-              </a>
-              <a
-                href="#"
-                className="block text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide py-2"
-              >
-                BROWSE ITEMS
-              </a>
-              <a
-                href="#"
-                className="block text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide py-2"
+              </Link>
+              
+              {/* Mobile Submit Items */}
+              <div className="py-2">
+                <button
+                  onClick={handleSubmitItemsToggle}
+                  className="flex items-center justify-between w-full text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide"
+                >
+                  <span className={`transition-colors ${isSubmitItemsActive ? 'text-blue-500 font-medium' : ''}`}>
+                    SUBMIT ITEMS
+                  </span>
+                  <IoMdArrowDropdown
+                    className={`w-4 h-4 transform transition-transform ${
+                      open ? "rotate-180" : "rotate-0"
+                    }`}
+                  />
+                </button>
+                {open && (
+                  <div className="ml-4 mt-2 space-y-2">
+                    <Link
+                      to="reportlostitem"
+                      className={`block text-sm py-1 transition-colors ${
+                        location.pathname === '/reportlostitem' 
+                          ? 'text-blue-600 font-medium' 
+                          : 'text-slate-600 hover:text-slate-800'
+                      }`}
+                    >
+                      Lost Items
+                    </Link>
+                    <Link
+                      to="reportfounditem"
+                      className={`block text-sm py-1 transition-colors ${
+                        location.pathname === '/reportfounditem' 
+                          ? 'text-blue-600 font-medium' 
+                          : 'text-slate-600 hover:text-slate-800'
+                      }`}
+                    >
+                      Found Items
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Browse Items */}
+              <div className="py-2">
+                <button
+                  onClick={handleBrowseItemsToggle}
+                  className="flex items-center justify-between w-full text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide"
+                >
+                  <span className={`transition-colors ${isBrowseItemsActive ? 'text-blue-500 font-medium' : ''}`}>
+                    BROWSE ITEMS
+                  </span>
+                  <IoMdArrowDropdown
+                    className={`w-4 h-4 transform transition-transform ${
+                      openBrowseritem ? "rotate-180" : "rotate-0"
+                    }`}
+                  />
+                </button>
+                {openBrowseritem && (
+                  <div className="ml-4 mt-2 space-y-2">
+                    <Link
+                      to="lostitem"
+                      className={`block text-sm py-1 transition-colors ${
+                        location.pathname === '/lostitem' 
+                          ? 'text-blue-600 font-medium' 
+                          : 'text-slate-600 hover:text-slate-800'
+                      }`}
+                    >
+                      Lost Items
+                    </Link>
+                    <Link
+                      to="founditem"
+                      className={`block text-sm py-1 transition-colors ${
+                        location.pathname === '/founditem' 
+                          ? 'text-blue-600 font-medium' 
+                          : 'text-slate-600 hover:text-slate-800'
+                      }`}
+                    >
+                      Found Items
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              <Link
+                to="contact"
+                className={`block font-normal text-sm tracking-wide py-2 transition-colors ${
+                  isContactActive 
+                    ? 'text-blue-500 font-medium' 
+                    : 'text-slate-600 hover:text-slate-800'
+                }`}
               >
                 CONTACT
-              </a>
+              </Link>
               <button className="w-full bg-slate-500 text-white px-8 py-2 font-normal text-sm tracking-wide hover:bg-slate-600 transition-colors mt-4">
                 LOGIN
               </button>
