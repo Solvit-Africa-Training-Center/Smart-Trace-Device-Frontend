@@ -193,7 +193,7 @@ const ReportLostItem: React.FC = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <p className="  text-white  ">
+        <div className="  text-white  ">
           <h1 className=" font-bold text-size-2xl">
             Report your Lost Device. Help Us Stop Theft.
           </h1>
@@ -202,7 +202,7 @@ const ReportLostItem: React.FC = () => {
             making it harder to resell and easier for a finder to return it to
             you.
           </p>{" "}
-        </p>
+        </div>
       </div>
 
       {/* Main Content */}

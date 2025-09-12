@@ -96,7 +96,7 @@ import imag9 from "../assets/images/phonen.jpg";
           backgroundRepeat: "no-repeat",
         }}
       >
-       <p className="  text-white  ">
+       <div className="  text-white  ">
           <h1 className=" font-bold text-size-2xl">
             Looking for Your Device?
           </h1>
@@ -105,7 +105,7 @@ import imag9 from "../assets/images/phonen.jpg";
             making it harder to resell and easier for a finder to return it to
             you.
           </p>{" "}
-          </p>
+          </div>
       </div>
 
       <div className="w-full p-8">
