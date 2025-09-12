@@ -10,13 +10,11 @@ import logo from '../../assets/images/logo.jpeg'
 import { TbUsers } from "react-icons/tb";
 import { LuMessageSquareText } from "react-icons/lu";
 import { CgFormatCenter } from "react-icons/cg";
-
-
 interface ToggleProps{
   isOpen: any;
   toggleSidebar:any
 }
-const UserDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
+const AdminDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
@@ -29,6 +27,11 @@ const UserDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
     },
 
     {
+      name: "Users",
+      path: "users",
+      icon: <TbUsers className="h-4 w-4 mr-3" />,
+    },
+    {
       name: "Found Items",
       path: "userfounditem",
       icon: <MdOutlineAppSettingsAlt className="h-4 w-4 mr-3" />,
@@ -40,11 +43,16 @@ const UserDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
       icon: <MdPayment className="h-4 w-4 mr-3" />,
     },
 
-    // {
-    //   name: "Matched",
-    //   path: "adminsetting",
-    //   icon: <CgFormatCenter className="h-5 w-5 mr-3" />,
-    // },
+    {
+      name: "Messages",
+      path: "message",
+      icon: <LuMessageSquareText className="h-4 w-4 mr-3" />,
+    },
+    {
+      name: "Matched",
+      path: "adminsetting",
+      icon: <CgFormatCenter className="h-5 w-5 mr-3" />,
+    },
   ];
 
   const handleNavClick = (path: To) => {
@@ -98,4 +106,4 @@ const UserDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
   );
 };
 
-export default UserDashSidebar;
+export default AdminDashSidebar;

@@ -7,7 +7,7 @@ import ReUsableSelect from "../ReusableComponents/ReUsableSelect";
 interface FormData {
   title: string;
   dateFound: string;
-  category: string;
+  category: string; 
   timeFound: string;
   brand: string;
   image: File | null;

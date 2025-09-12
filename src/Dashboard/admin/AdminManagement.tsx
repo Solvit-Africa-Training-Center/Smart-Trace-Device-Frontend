@@ -105,7 +105,7 @@ const staticUsers: User[] = [
   },
 ];
 
-export default function UserManagement(): JSX.Element {
+export default function AdminManagement(): JSX.Element {
   // Use static data instead of context
   const [users, setUsers] = useState<User[]>(staticUsers);
   const [currentPage, setCurrentPage] = useState<number>(1);

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import UserHeader from "./DashNavbar";
-import UserDashSidebar from "./UserDashSidebar";
+import UserDashSidebar from "./AdminDashsidebar";
 
-const UserDashLayout = () => {
+const AdminDashLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -11,6 +11,7 @@ const UserDashLayout = () => {
     const checkIsMobile = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
+      // Auto-close sidebar on mobile, always open on larger screens
       if (mobile) {
         setSidebarOpen(false);
       } else {
@@ -18,10 +19,13 @@ const UserDashLayout = () => {
       }
     };
 
+    // Check on initial load
     checkIsMobile();
 
+    // Add event listener for window resize
     window.addEventListener("resize", checkIsMobile);
 
+    // Cleanup
     return () => window.removeEventListener("resize", checkIsMobile);
   }, []);
 
@@ -43,4 +47,4 @@ const UserDashLayout = () => {
   );
 };
 
-export default UserDashLayout;
+export default AdminDashLayout;

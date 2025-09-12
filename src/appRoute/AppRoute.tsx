@@ -6,17 +6,20 @@ import LostItem from "../Landingpage/LostItem";
 import FoundItem from "../Landingpage/FoundItem";
 import ReportFoundItem from "../Landingpage/ReportFoundItem";
 import ReportLostItem from "../Landingpage/ReportLostItem";
-import UserDashLayout from "../Dashboard/userdash/UserDashLayout";
-import UserDashHome from "../Dashboard/userdash/UserDashHome";
 import ScrollToTop from "../Landingpage/ScrollTop";
-import UserFoundItem from "../Dashboard/userdash/UserFoundItem";
-import ContactMessagesPage from "../Dashboard/userdash/ContactMessages";
-import UserLostItem from "../Dashboard/userdash/UserLostItem";
+import UserFoundItem from "../Dashboard/admin/AdminFoundItem";
+import ContactMessagesPage from "../Dashboard/admin/ContactMessages";
+import UserLostItem from "../Dashboard/admin/AdminLostItem";
 import { Users } from "lucide-react";
-import UserManagement from "../Dashboard/userdash/UsersManagement";
 import LandingAuth from "../Landingpage/auth";
 import Login from "../Landingpage/login";
 import Signup from "../Landingpage/signup";
+import AdminDashHome from "../Dashboard/admin/AdminDashHome";
+import UserDashHome from "../Dashboard/userDash/UserDashHome";
+import AdminManagement from "../Dashboard/admin/AdminManagement";
+import AdminLostItem from "../Dashboard/admin/AdminFoundItem";
+import AdminDashLayout from "../Dashboard/admin/AdminDashLayout";
+import UserDashLayout from "../Dashboard/userDash/UserDashLayout";
 
 const AppRaute = () => {
   return (
@@ -27,15 +30,26 @@ const AppRaute = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup/>} />
 
-        <Route path="/userdash" element={<UserDashLayout />}>
-          <Route index element={<UserDashHome />} />
-          <Route path="userdash" element={<UserDashHome />} />
-          <Route path="users" element={<UserManagement />} />
-          <Route path="userfounditem" element={<UserFoundItem />} />
-          <Route path="userlostitem" element={<UserLostItem />} />
+          {/* admin */}
 
+        <Route path="/admin" element={<AdminDashLayout />}>
+          <Route index element={<AdminDashHome />} />
+          <Route path="admin" element={<AdminDashHome />} />
+          <Route path="users" element={<AdminManagement />} />
+          <Route path="userfounditem" element={<AdminLostItem />} />
+          <Route path="userlostitem" element={<AdminLostItem />} />
           <Route path="message" element={<ContactMessagesPage />} />
         </Route>
+
+        {/* userdash */}
+        <Route path="/userDash" element={<UserDashLayout />}>
+          <Route index element={<UserDashHome />} />
+          <Route path="userdash" element={<UserDashHome />} />
+          <Route path="userfounditem" element={<UserFoundItem />} />
+          <Route path="userlostitem" element={<UserLostItem />} />
+        </Route>
+
+
         <Route path="/" element={<Layout />}>
           <Route index element={<About />} />
           <Route path="home" element={<About />} />
