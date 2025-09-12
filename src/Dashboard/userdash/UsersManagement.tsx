@@ -280,31 +280,31 @@ export default function UserManagement(): JSX.Element {
                 <tr>
                   <th
                     scope="col"
-                    className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 sm:px-4 py-2 sm:py-3 text-left text-sm font-medium text-gray-500 tracking-wider"
                   >
-                    ID
+                    Id
                   </th>
                   <th
                     scope="col"
-                    className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 sm:px-4 py-2 sm:py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Name
                   </th>
                   <th
                     scope="col"
-                    className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell"
+                    className="px-2 sm:px-4 py-2 sm:py-3 text-left text-sm font-medium text-gray-500 tracking-wider hidden md:table-cell"
                   >
                     Email
                   </th>
                   <th
                     scope="col"
-                    className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell"
+                    className="px-2 sm:px-4 py-2 sm:py-3 text-left text-sm font-medium text-gray-500 tracking-wider hidden lg:table-cell"
                   >
                     Country
                   </th>
                   <th
                     scope="col"
-                    className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 sm:px-4 py-2 sm:py-3 text-right text-sm font-medium text-gray-500 tracking-wider"
                   >
                     Actions
                   </th>

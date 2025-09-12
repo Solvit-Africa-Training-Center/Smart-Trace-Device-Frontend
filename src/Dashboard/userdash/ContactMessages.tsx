@@ -352,20 +352,20 @@ export default function ContactMessagesPage(): JSX.Element {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 tracking-wider">
                     Name
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 tracking-wider hidden lg:table-cell">
                     Email
                   </th>
 
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 tracking-wider">
                     Subject
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500  tracking-wider">
                     Description
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 tracking-wider">
                     Actions
                   </th>
                 </tr>
