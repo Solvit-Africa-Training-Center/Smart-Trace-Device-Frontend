@@ -757,7 +757,7 @@ const ReportLostItem: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
   );
 };
 
-export default function UserLostItem(): JSX.Element {
+export default function AdminLostItem(): JSX.Element {
   // Use static data instead of context
   const allItems: LostItem[] = staticLostItems;
 
