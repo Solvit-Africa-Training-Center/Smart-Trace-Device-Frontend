@@ -11,6 +11,7 @@ const Navbar: React.FC<HeaderProps> = () => {
   const [openBrowseritem, setopenBrowseritem] = useState(false);
   const [open, setOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   
   const location = useLocation();
 
@@ -23,6 +24,17 @@ const Navbar: React.FC<HeaderProps> = () => {
   // Check for individual page states
   const isHomeActive = location.pathname === '/home' || location.pathname === '/';
   const isContactActive = location.pathname === '/contact';
+
+  // Scroll detection effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Keep dropdowns open if user is on related pages
   useEffect(() => {
@@ -53,58 +65,63 @@ const Navbar: React.FC<HeaderProps> = () => {
   };
 
   return (
-    <header className="w-full fixed">
-      {/* Top contact bar */}
-      <div className="bg-slate-500 text-white py-3 px-6">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center space-x-30">
+    <header className="w-full fixed z-50">
+      {/* Top contact bar - hidd en when scrolled */}
+      <div  className={`hidden sm:block bg-primaryColor-100 text-white py-2 sm:py-3 px-4 sm:px-5 transition-transform duration-300 ${
+    isScrolled ? '-translate-y-full' : 'translate-y-0'
+  }`}>
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
+          {/* Contact Information */}
+          <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-6 lg:space-x-8">
             <div className="flex items-center space-x-2">
-              <Mail className="w-4 h-4" />
-              <span className="text-sm">needhelp@example.com</span>
+              <Mail className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="text-xs sm:text-sm font-medium">needhelp@example.com</span>
             </div>
             <div className="flex items-center space-x-2">
-              <Phone className="w-4 h-4" />
-              <span className="text-sm">Tel: +250 784 127 871</span>
+              <Phone className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="text-xs sm:text-sm font-medium">Tel: +250 784 127 871</span>
             </div>
           </div>
 
           {/* Social media icons */}
-          <div className="hidden md:flex items-center space-x-10 pr-2">
-            <Link to={""} className="h-4 w-4">
-              <FaXTwitter />
+          <div className="flex items-center space-x-4 sm:space-x-6 lg:space-x-7">
+            <Link to={""} className="h-3 w-3 sm:h-4 sm:w-4 text-white/80 hover:text-white transition-colors">
+              <FaXTwitter className="w-full h-full" />
             </Link>
-            <Link to={""} className="h-4 w-4 ">
-              <FaFacebookF />
+            <Link to={""} className="h-3 w-3 sm:h-4 sm:w-4 text-white/80 hover:text-white transition-colors">
+              <FaFacebookF className="w-full h-full" />
             </Link>
-            <Link to={"BBB"} className="h-4 w-4">
-              <FaYoutube />
+            <Link to={"BBB"} className="h-3 w-3 sm:h-4 sm:w-4 text-white/80 hover:text-white transition-colors">
+              <FaYoutube className="w-full h-full" />
             </Link>
-            <Link to={""} className="h-4 w-4">
-              <FaLinkedinIn />
+            <Link to={""} className="h-3 w-3 sm:h-4 sm:w-4 text-white/80 hover:text-white transition-colors">
+              <FaLinkedinIn className="w-full h-full" />
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Main navigation */}
-      <div className="bg-gray-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-between items-center h-20">
+      {/* Main navigation - stays visible */}
+      <div className={`bg-white shadow-lg transition-transform duration-300 ${
+    isScrolled ? 'sm:-translate-y-[60px] lg:-translate-y-[45px]' : 'translate-y-0'
+  }`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex justify-between items-center h-16 sm:h-18 lg:h-20">
             {/* Logo */}
             <div className="flex-shrink-0">
               <div className="flex items-center">
-                <div className=" w-20 h-5 bg-slate-500 rounded flex items-center justify-center mr-4">
-                  <img src={logo} alt="" className=" text-white" />
+                <div className="w-16 h-8 sm:w-18 sm:h-9 lg:w-20 lg:h-10  rounded flex items-center justify-center overflow-hidden">
+                  <img src={logo} alt="Logo" className="w-full h-full object-contain" />
                 </div>
               </div>
             </div>
 
             {/* Desktop Navigation and Login */}
-            <div className="hidden lg:flex items-center space-x-12">
-              <nav className="flex items-center space-x-12">
+            <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+              <nav className="flex items-center space-x-6 xl:space-x-8">
                 <Link
                   to={"home"}
-                  className={`font-bold text-[14px] tracking-wide transition-colors ${
+                  className={`font-medium text-sm xl:text-base tracking-wide transition-colors ${
                     isHomeActive
                       ? "text-blue-500"
                       : "text-slate-600 hover:text-blue-500"
@@ -112,32 +129,32 @@ const Navbar: React.FC<HeaderProps> = () => {
                 >
                   Home
                 </Link>
+                
+                {/* Submit Items Dropdown */}
                 <div className="relative">
-                  {/* Submit Items Trigger button */}
                   <button
                     onClick={handleSubmitItemsToggle}
-                    className="text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide flex items-center"
+                    className="text-slate-600 hover:text-slate-800 font-normal text-sm xl:text-base tracking-wide flex items-center"
                   >
-                    <p
-                      className={`hover:text-blue-500 font-bold text-[14px] tracking-wide transition-colors ${
+                    <span
+                      className={`hover:text-blue-500 font-light hover:font-medium tracking-wide transition-colors ${
                         isSubmitItemsActive ? "text-blue-500" : "text-slate-600"
                       }`}
                     >
                       Submit Items
-                    </p>
+                    </span>
                     <IoMdArrowDropdown
-                      className={`ml-2 mt-1.5 w-5 h-5 transform transition-transform ${
+                      className={`ml-1 w-4 h-4 xl:w-5 xl:h-5 transform transition-transform ${
                         open ? "rotate-180" : "rotate-0"
                       }`}
                     />
                   </button>
 
-                  {/* Submit Items Dropdown content */}
                   {open && (
-                    <div className="absolute mt-2 w-40 bg-white border rounded-md shadow-lg z-50">
+                    <div className="absolute top-full mt-2 w-44 bg-white border border-gray-200 rounded-lg shadow-xl z-50 overflow-hidden">
                       <Link
                         to="reportlostitem"
-                        className={`block px-4 py-2 text-sm hover:bg-slate-100 transition-colors ${
+                        className={`block px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
                           location.pathname === "/reportlostitem"
                             ? "bg-blue-50 text-blue-600 font-medium"
                             : "text-slate-700"
@@ -147,7 +164,7 @@ const Navbar: React.FC<HeaderProps> = () => {
                       </Link>
                       <Link
                         to="reportfounditem"
-                        className={`block px-4 py-2 text-sm hover:bg-slate-100 transition-colors ${
+                        className={`block px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
                           location.pathname === "/reportfounditem"
                             ? "bg-blue-50 text-blue-600 font-medium"
                             : "text-slate-700"
@@ -158,32 +175,32 @@ const Navbar: React.FC<HeaderProps> = () => {
                     </div>
                   )}
                 </div>
+
+                {/* Browse Items Dropdown */}
                 <div className="relative">
-                  {/* Browse Items Trigger button */}
                   <button
                     onClick={handleBrowseItemsToggle}
-                    className="text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide flex items-center"
+                    className="text-slate-600 hover:text-slate-800 font-normal text-sm xl:text-base tracking-wide flex items-center"
                   >
-                    <p
-                      className={`hover:text-blue-500 font-bold text-[14px] tracking-wide transition-colors ${
+                    <span
+                      className={`hover:text-blue-500 font-medium tracking-wide transition-colors ${
                         isBrowseItemsActive ? "text-blue-500" : "text-slate-600"
                       }`}
                     >
                       Browse Items
-                    </p>
+                    </span>
                     <IoMdArrowDropdown
-                      className={`ml-2 mt-1.5 w-5 h-5 transform transition-transform ${
+                      className={`ml-1 w-4 h-4 xl:w-5 xl:h-5 transform transition-transform ${
                         openBrowseritem ? "rotate-180" : "rotate-0"
                       }`}
                     />
                   </button>
 
-                  {/* Browse Items Dropdown content */}
                   {openBrowseritem && (
-                    <div className="absolute mt-2 w-40 bg-white border rounded-md shadow-lg z-50">
+                    <div className="absolute top-full mt-2 w-44 bg-white border border-gray-200 rounded-lg shadow-xl z-50 overflow-hidden">
                       <Link
                         to="lostitem"
-                        className={`block px-4 py-2 text-sm hover:bg-slate-100 transition-colors ${
+                        className={`block px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
                           location.pathname === "/lostitem"
                             ? "bg-blue-50 text-blue-600 font-medium"
                             : "text-slate-700"
@@ -193,7 +210,7 @@ const Navbar: React.FC<HeaderProps> = () => {
                       </Link>
                       <Link
                         to="founditem"
-                        className={`block px-4 py-2 text-sm hover:bg-slate-100 transition-colors ${
+                        className={`block px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
                           location.pathname === "/founditem"
                             ? "bg-blue-50 text-blue-600 font-medium"
                             : "text-slate-700"
@@ -204,9 +221,10 @@ const Navbar: React.FC<HeaderProps> = () => {
                     </div>
                   )}
                 </div>
+
                 <Link
                   to={"contact"}
-                  className={`font-bold text-[14px] tracking-wide transition-colors ${
+                  className={`font-medium text-sm xl:text-base tracking-wide transition-colors ${
                     isContactActive
                       ? "text-blue-500"
                       : "text-slate-600 hover:text-blue-500"
@@ -217,80 +235,84 @@ const Navbar: React.FC<HeaderProps> = () => {
               </nav>
 
               {/* Login Button */}
-              <button className="bg-slate-500 text-white px-6 py-2 font-normal text-sm  hover:bg-slate-600 rounded-md transition-colors">
+              <button className="bg-primaryColor-100 text-white px-5 py-2.5 xl:px-6 xl:py-3 font-medium text-sm xl:text-base hover:bg-slate-600 rounded-lg transition-all duration-200 hover:shadow-md">
                 <Link to={"/LandingAuth"}>Login</Link>
               </button>
             </div>
-          </div>
 
-          {/* Mobile menu button */}
-          <div className="lg:hidden">
-            <button
-              onClick={handleMobileMenuToggle}
-              className="text-slate-600 hover:text-slate-800"
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
+            {/* Mobile menu button */}
+            <div className="lg:hidden">
+              <button
+                onClick={handleMobileMenuToggle}
+                className="text-slate-600 hover:text-slate-800 p-2 rounded-md transition-colors"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                ) : (
+                  <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-gray-50 border-t border-gray-200">
-          <div className="px-4 py-4 space-y-3">
+        <div className={`lg:hidden bg-white border-t border-gray-200 shadow-lg transition-transform duration-300 ${
+          isScrolled ? '-translate-y-[50px] sm:-translate-y-[60px]' : 'translate-y-0'
+        }`}>
+          <div className="px-4 sm:px-6 py-4 space-y-1 max-h-screen overflow-y-auto">
+            {/* Mobile Home Link */}
             <Link
               to="home"
-              className={`block font-normal text-sm tracking-wide py-2 transition-colors ${
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`block font-medium text-base py-3 px-4 rounded-lg transition-all ${
                 isHomeActive
-                  ? "text-blue-500 font-medium"
-                  : "text-slate-600 hover:text-slate-800"
+                  ? "text-blue-600 bg-blue-50"
+                  : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
               }`}
             >
-              HOME
+              Home
             </Link>
 
             {/* Mobile Submit Items */}
-            <div className="py-2">
+            <div className="py-1">
               <button
                 onClick={handleSubmitItemsToggle}
-                className="flex items-center justify-between w-full text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide"
+                className={`flex items-center justify-between w-full text-left py-3 px-4 rounded-lg font-medium text-base transition-all ${
+                  isSubmitItemsActive
+                    ? "text-blue-600 bg-blue-50"
+                    : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
+                }`}
               >
-                <span
-                  className={`transition-colors ${
-                    isSubmitItemsActive ? "text-blue-500 font-medium" : ""
-                  }`}
-                >
-                  SUBMIT ITEMS
-                </span>
+                <span>Submit Items</span>
                 <IoMdArrowDropdown
-                  className={`w-4 h-4 transform transition-transform ${
+                  className={`w-5 h-5 transform transition-transform ${
                     open ? "rotate-180" : "rotate-0"
                   }`}
                 />
               </button>
               {open && (
-                <div className="ml-4 mt-2 space-y-2">
+                <div className="ml-4 mt-2 space-y-1 border-l-2 border-gray-100 pl-4">
                   <Link
                     to="reportlostitem"
-                    className={`block text-sm py-1 transition-colors ${
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`block text-sm py-2.5 px-3 rounded-md transition-colors ${
                       location.pathname === "/reportlostitem"
-                        ? "text-blue-600 font-medium"
-                        : "text-slate-600 hover:text-slate-800"
+                        ? "text-blue-600 bg-blue-50 font-medium"
+                        : "text-slate-600 hover:text-slate-800 hover:bg-gray-50"
                     }`}
                   >
                     Lost Items
                   </Link>
                   <Link
                     to="reportfounditem"
-                    className={`block text-sm py-1 transition-colors ${
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`block text-sm py-2.5 px-3 rounded-md transition-colors ${
                       location.pathname === "/reportfounditem"
-                        ? "text-blue-600 font-medium"
-                        : "text-slate-600 hover:text-slate-800"
+                        ? "text-blue-600 bg-blue-50 font-medium"
+                        : "text-slate-600 hover:text-slate-800 hover:bg-gray-50"
                     }`}
                   >
                     Found Items
@@ -300,42 +322,42 @@ const Navbar: React.FC<HeaderProps> = () => {
             </div>
 
             {/* Mobile Browse Items */}
-            <div className="py-2">
+            <div className="py-1">
               <button
                 onClick={handleBrowseItemsToggle}
-                className="flex items-center justify-between w-full text-slate-600 hover:text-slate-800 font-normal text-sm tracking-wide"
+                className={`flex items-center justify-between w-full text-left py-3 px-4 rounded-lg font-medium text-base transition-all ${
+                  isBrowseItemsActive
+                    ? "text-blue-600 bg-blue-50"
+                    : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
+                }`}
               >
-                <span
-                  className={`transition-colors ${
-                    isBrowseItemsActive ? "text-blue-500 font-medium" : ""
-                  }`}
-                >
-                  BROWSE ITEMS
-                </span>
+                <span>Browse Items</span>
                 <IoMdArrowDropdown
-                  className={`w-4 h-4 transform transition-transform ${
+                  className={`w-5 h-5 transform transition-transform ${
                     openBrowseritem ? "rotate-180" : "rotate-0"
                   }`}
                 />
               </button>
               {openBrowseritem && (
-                <div className="ml-4 mt-2 space-y-2">
+                <div className="ml-4 mt-2 space-y-1 border-l-2 border-gray-100 pl-4">
                   <Link
                     to="lostitem"
-                    className={`block text-sm py-1 transition-colors ${
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`block text-sm py-2.5 px-3 rounded-md transition-colors ${
                       location.pathname === "/lostitem"
-                        ? "text-blue-600 font-medium"
-                        : "text-slate-600 hover:text-slate-800"
+                        ? "text-blue-600 bg-blue-50 font-medium"
+                        : "text-slate-600 hover:text-slate-800 hover:bg-gray-50"
                     }`}
                   >
                     Lost Items
                   </Link>
                   <Link
                     to="founditem"
-                    className={`block text-sm py-1 transition-colors ${
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`block text-sm py-2.5 px-3 rounded-md transition-colors ${
                       location.pathname === "/founditem"
-                        ? "text-blue-600 font-medium"
-                        : "text-slate-600 hover:text-slate-800"
+                        ? "text-blue-600 bg-blue-50 font-medium"
+                        : "text-slate-600 hover:text-slate-800 hover:bg-gray-50"
                     }`}
                   >
                     Found Items
@@ -344,54 +366,57 @@ const Navbar: React.FC<HeaderProps> = () => {
               )}
             </div>
 
+            {/* Mobile Contact Link */}
             <Link
               to="contact"
-              className={`block font-normal text-sm tracking-wide py-2 transition-colors ${
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`block font-medium text-base py-3 px-4 rounded-lg transition-all ${
                 isContactActive
-                  ? "text-blue-500 font-medium"
-                  : "text-slate-600 hover:text-slate-800"
+                  ? "text-blue-600 bg-blue-50"
+                  : "text-slate-700 hover:text-blue-600 hover:bg-gray-50"
               }`}
             >
-              CONTACT
+              Contact Us
             </Link>
-            <button className="w-full bg-slate-500 text-white px-8 py-2 font-normal text-sm tracking-wide hover:bg-slate-600 transition-colors mt-4">
-              LOGIN
-            </button>
+
+            {/* Mobile Login Button */}
+            <div className="pt-4 pb-2">
+              <button 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-full bg-slate-500 text-white py-3 px-4 font-medium text-base rounded-lg hover:bg-slate-600 transition-all duration-200 hover:shadow-md"
+              >
+                <Link to={"/LandingAuth"} className="block w-full h-full">
+                  Login
+                </Link>
+              </button>
+            </div>
 
             {/* Mobile Social Icons */}
-            <div className="flex items-center space-x-6 pt-4 border-t border-gray-200">
-              <a
-                href="#"
-                className="text-slate-500 hover:opacity-80 transition-opacity"
+            <div className="flex items-center justify-center space-x-6 pt-4 pb-2 border-t border-gray-200">
+              <Link
+                to=""
+                className="text-slate-400 hover:text-slate-600 transition-colors p-2"
               >
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-              </a>
-              <a
-                href="#"
-                className="text-slate-500 hover:opacity-80 transition-opacity"
+                <FaXTwitter className="w-5 h-5" />
+              </Link>
+              <Link
+                to=""
+                className="text-slate-400 hover:text-slate-600 transition-colors p-2"
               >
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                </svg>
-              </a>
-              <a
-                href="#"
-                className="text-slate-500 hover:opacity-80 transition-opacity"
+                <FaFacebookF className="w-5 h-5" />
+              </Link>
+              <Link
+                to="BBB"
+                className="text-slate-400 hover:text-slate-600 transition-colors p-2"
               >
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                </svg>
-              </a>
-              <a
-                href="#"
-                className="text-slate-500 hover:opacity-80 transition-opacity"
+                <FaYoutube className="w-5 h-5" />
+              </Link>
+              <Link
+                to=""
+                className="text-slate-400 hover:text-slate-600 transition-colors p-2"
               >
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                </svg>
-              </a>
+                <FaLinkedinIn className="w-5 h-5" />
+              </Link>
             </div>
           </div>
         </div>
