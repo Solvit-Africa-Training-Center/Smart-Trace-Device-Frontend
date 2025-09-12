@@ -194,7 +194,7 @@ const ReportFoundItem: React.FC = () => {
         }}
       >
         {" "}
-        <p className="  text-white  ">
+        <div className="  text-white  ">
           <h1 className=" font-bold text-size-2xl">
             Found a Device? Do the Right Thing.{" "}
           </h1>
@@ -203,7 +203,7 @@ const ReportFoundItem: React.FC = () => {
             rightful owner. Use our secure database to check if the device has
             been reported lost or stolen.
           </p>{" "}
-        </p>
+        </div>
       </div>
 
       {/* Main Content */}

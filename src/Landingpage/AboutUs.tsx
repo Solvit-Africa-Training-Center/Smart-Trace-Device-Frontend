@@ -244,7 +244,12 @@ import ReUsableButton from "../ReusableComponents/ReUsableButton";
 import ContactUs from "./ContactUs";
 import TestimonialComponent from "./Testmonial";
 
+import { useGetProductsQuery } from "../Api/item";
+
 export default function About() {
+  const {  data } = useGetProductsQuery();
+  
+
   return (
     <div>
       <div
@@ -256,19 +261,28 @@ export default function About() {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <p className=" font-medium text-[25px]  text-white leading-tight mb-3 sm:mb-3">
+        <div className=" font-medium text-[25px]  text-white leading-tight mb-3 sm:mb-3">
           Connect Lost Gadgets With Their Rightful Owners
           <p className=" font-normal text-[20px] mt-3">
             A safer way to report, find, and verify electronic devices.
           </p>
-        </p>
+        </div>
         {/* Button container */}
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
           <ReUsableButton label="Submit Lost Items" />
           <ReUsableButton label="Submit Found Items" />
         </div>
       </div>
-
+      <div>
+        {
+          data?.products.map((item: any) => (
+            <div>
+              {item.price}
+            </div>
+          ))
+        }
+      </div>
+      
       {/* Device Recovery Section */}
       <div className="bg-gray-50 py-8 px-4 sm:py-12 sm:px-6 lg:py-16 lg:px-8">
         <div className="max-w-7xl mx-auto">

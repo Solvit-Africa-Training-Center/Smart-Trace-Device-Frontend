@@ -1,8 +1,6 @@
 import { Mail, Lock } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const navigate = useNavigate();
 
   return (
     <div className="flex h-screen items-center justify-center bg-gray-100">
