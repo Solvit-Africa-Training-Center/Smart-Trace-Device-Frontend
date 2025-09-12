@@ -1,8 +1,8 @@
 // ItemsGrid.tsx
 import React from "react";
 import homei from "../assets/images/home.jpg";
-import { useLostItems } from "../context/ItemContext";
 import LostItemCard from "../hooks/useItem";
+import { useLostItems } from "../context/ItemContext";
 
 const LostItem: React.FC = () => {
   const { lostItems, loading } = useLostItems();
@@ -26,8 +26,13 @@ const LostItem: React.FC = () => {
             backgroundRepeat: "no-repeat",
           }}
         >
-          <p className="text-2xl w-1/2 font-light text-white leading-tight mb-8 sm:mb-12">
-            A safer way to report, find, and verify electronic devices.
+          <p className="  text-white  ">
+            <h1 className=" font-bold text-size-2xl">Verify Before You Buy </h1>
+            <p className=" text-size-lg">
+              Reporting your lost or stolen device helps protect everyone by
+              making it harder to resell and easier for a finder to return it to
+              you.
+            </p>{" "}
           </p>
         </div>
 
@@ -53,7 +58,7 @@ const LostItem: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6  items-center justify-items-center place-items-center mx-auto">
             {lostItems.map((item) => (
               <div className="w-full max-w-sm" key={item.id}>
-                <LostItemCard item={item} />
+                <LostItemCard title="Item Lost" item={item} />
               </div>
             ))}
           </div>

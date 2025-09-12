@@ -1,14 +1,12 @@
-import './App.css'
-import { LostItemsProvider } from './context/ItemContext'
-import Landing from './Landingpage/LandingRaute'
+import "./App.css";
+import AppRaute from "./appRoute/AppRoute";
 
 function App() {
-
   return (
-    <LostItemsProvider>
-      <Landing/>
-    </LostItemsProvider>
-  )
+    <div>
+      <AppRaute/>
+   </div>
+  );
 }
 
-export default App
+export default App;

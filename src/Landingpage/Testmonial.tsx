@@ -2,21 +2,16 @@ import React from "react";
 
 const TestimonialComponent: React.FC = () => {
   return (
-    <div className="w-full bg-gray-100 py-16 sm:py-20 lg:py-15">
+    <div className="w-full bg-primaryColor-500 py-16 sm:py-20 lg:py-15">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="text-2xl sm:text-2xl lg:text-2xl font-bold text-gray-900 mb-6 sm:mb-8 tracking-wide">
+          <h2 className="text-2xl sm:text-2xl lg:text-2xl font-bold text-gray-900 mb-2 tracking-wide">
             Testimonials
           </h2>
 
-          <div className="space-y-2 mb-10 sm:mb-10">
-            <p className="text-xl sm:text-xl lg:text-xl text-gray-700 font-medium">
-              Don't Take Our Word For Our Word For It
+            <p className="text-size-md text-gray-700 mb-9">
+              Don't Take Our Word For Our Word For It Trust Our Customers
             </p>
-            <p className="text-xl sm:text-xl lg:text-xl text-gray-700 font-medium">
-              Trust Our Customers
-            </p>
-          </div>
 
           {/* Testimonial cards */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">

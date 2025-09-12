@@ -1,5 +1,6 @@
 import { Mail, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import ReUsableInput from "../ReusableComponents/ReUsableInput";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ export default function Signup() {
     <div className="flex h-screen items-center justify-center bg-gray-100">
       <div className="w-[400px] bg-white p-8 rounded-2xl shadow-md">
         <h2 className="text-2xl font-bold text-blue-800 text-center mb-6">
-          CREATE ACCOUNT
+          CREATE ACCOUNTnnnnnnnnnnnnnn
         </h2>
         <form className="flex flex-col gap-4">
           <input
@@ -26,10 +27,12 @@ export default function Signup() {
           </div>
           <div className="flex items-center border p-3 rounded-md">
             <Lock className="w-5 h-5 text-gray-500 mr-2" />
-            <input
+            <ReUsableInput
+              name="password"
+              value=""
+              onChange={() => {}}
               type="password"
               placeholder="Password"
-              className="w-full outline-none"
             />
           </div>
           <button className="mt-2 w-full py-3 rounded-full bg-blue-800 text-white hover:bg-blue-900 transition">

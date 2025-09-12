@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { MapPin, Phone, Mail, Youtube } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
+import { FaLinkedinIn } from "react-icons/fa6";
 
 interface FooterProps {
   className?: string;
 }
 
-const Footer: React.FC<FooterProps> = ({ className = "" }) => {
+const Footer: React.FC<FooterProps> = () => {
   const [email, setEmail] = useState("");
 
   const handleSubscribe = () => {
@@ -27,113 +29,103 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
   };
 
   return (
-    <footer className={`bg-slate-600 text-white py-12 px-4 ${className}`}>
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+    <footer className=" flex  items-center justify-between bg-slate-700 text-white py-8 pl-20 ">
+      <div className="  mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-30">
           {/* Left Column - Newsletter */}
-          <div className="lg:col-span-1">
-            <p className="text-white text-base leading-relaxed mb-6">
+          <div className="space-y-3">
+            <p className="text-white text-size-sm leading-relaxed  ">
               Authoritatively simplify open-source resources via backend
               visualize business e-markets before parallel convergence optimize
               sticky and idea-sharing rather than unique solutions.
             </p>
 
             {/* Email Subscription */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-6">
+            <div className="flex gap-2">
               <input
                 type="email"
                 value={email}
                 onChange={handleEmailChange}
                 onKeyPress={handleKeyPress}
                 placeholder="Your Email address"
-                className="flex-1 px-4 py-3 rounded-md text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="flex-1 px-3 py-2 bg-white text-gray-800 text-sm rounded outline-none"
               />
               <button
                 onClick={handleSubscribe}
-                className="px-6 py-3 bg-white text-slate-600 rounded-md font-medium hover:bg-gray-100 transition-colors duration-200 whitespace-nowrap"
+                className="px-4 py-2 bg-white text-slate-700 rounded font-medium hover:bg-gray-100 transition-colors text-sm whitespace-nowrap"
               >
-                SUBCRIBE
+                Subscribe
               </button>
             </div>
 
             {/* Social Media Icons */}
             <div className="flex space-x-4">
-              <div className="w-10 h-10 bg-red-600 rounded-md flex items-center justify-center hover:bg-red-700 cursor-pointer transition-colors">
+              <div className="w-7 h-7 bg-red-600 rounded-md flex items-center justify-center hover:bg-red-700 cursor-pointer transition-colors">
                 <Youtube className="w-5 h-5" />
               </div>
-              <div className="w-10 h-10 bg-green-500 rounded-md flex items-center justify-center hover:bg-green-600 cursor-pointer transition-colors">
-                <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                  <span className="text-green-500 font-bold text-xs">G</span>
-                </div>
-              </div>
-              <div className="w-10 h-10 bg-blue-600 rounded-md flex items-center justify-center hover:bg-blue-700 cursor-pointer transition-colors">
-                <span className="text-white font-bold text-sm">in</span>
+              <FcGoogle className="w-7 h-7" />
+              <div className="w-7 h-7 bg-blue-600 rounded-md flex items-center justify-center hover:bg-blue-700 cursor-pointer transition-colors">
+                <FaLinkedinIn />
               </div>
             </div>
           </div>
 
           {/* Middle Column - Services */}
-          <div className="lg:col-span-1">
-            <h3 className="text-xl font-semibold mb-6">Services</h3>
+          <div>
+            <h3 className="text-size-lg font-semibold mb-4">Services</h3>
 
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <div className="w-10 h-10 border-2 border-white rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <MapPin className="w-5 h-5" />
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 border border-white rounded-full flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-4 h-4" />
                 </div>
-                <div>
-                  <p className="text-white leading-relaxed">
-                    25 Street, 145 City Road New Town DD14, USA
-                  </p>
-                </div>
+                <p className="text-white text-size-sm">
+                  25 Street, Kigali City Road, Rwanda
+                </p>
               </div>
 
-              <div className="flex items-start space-x-3">
-                <div className="w-10 h-10 border-2 border-white rounded-full flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-5 h-5" />
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 border border-white rounded-full flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-4 h-4" />
                 </div>
-                <div>
-                  <p className="text-white">+250 784 127 871</p>
-                </div>
+                <p className="text-white text-size-sm">+250 784 127 871</p>
               </div>
 
-              <div className="flex items-start space-x-3">
-                <div className="w-10 h-10 border-2 border-white rounded-full flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-5 h-5" />
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 border border-white rounded-full flex items-center justify-center flex-shrink-0">
+                  <Mail className="w-4 h-4" />
                 </div>
-                <div>
-                  <p className="text-white">needhelp@company.com</p>
-                </div>
+                <p className="text-white text-size-sm">needhelp@company.com</p>
               </div>
             </div>
           </div>
 
           {/* Right Column - Quick Links */}
-          <div className="lg:col-span-1">
-            <h3 className="text-xl font-semibold mb-6">Quick Links</h3>
+          <div className="w-1/2">
+            <h3 className="text-size-lg font-semibold mb-4">Quick Links</h3>
 
-            <nav className="space-y-3">
+            <nav className="space-y-2">
               <a
                 href="#"
-                className="block text-white hover:text-blue-200 transition-colors duration-200"
+                className="block text-white text-size-sm hover:text-blue-200 transition-colors duration-200"
               >
                 Report Lost Item
               </a>
               <a
                 href="#"
-                className="block text-white hover:text-blue-200 transition-colors duration-200"
+                className="block text-white text-size-sm hover:text-blue-200 transition-colors duration-200"
               >
                 Report Found Item
               </a>
               <a
                 href="#"
-                className="block text-white hover:text-blue-200 transition-colors duration-200"
+                className="block text-white text-size-sm hover:text-blue-200 transition-colors duration-200"
               >
                 Browse Items
               </a>
               <a
                 href="#"
-                className="block text-white hover:text-blue-200 transition-colors duration-200"
+                className="block text-white text-size-sm hover:text-blue-200 transition-colors duration-200"
               >
                 Contact
               </a>
