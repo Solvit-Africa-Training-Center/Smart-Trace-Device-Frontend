@@ -235,7 +235,7 @@ const Navbar: React.FC<HeaderProps> = () => {
               </nav>
 
               {/* Login Button */}
-              <button className="bg-primaryColor-100 text-white px-5 py-2.5 xl:px-6 xl:py-3 font-medium text-sm xl:text-base hover:bg-slate-600 rounded-lg transition-all duration-200 hover:shadow-md">
+              <button className="bg-primaryColor-100 text-white px-5 py-2 xl:px-6 xl:py-2 font-medium text-sm xl:text-base hover:bg-slate-600 rounded-lg transition-all duration-200 hover:shadow-md">
                 <Link to={"/LandingAuth"}>Login</Link>
               </button>
             </div>
@@ -383,7 +383,7 @@ const Navbar: React.FC<HeaderProps> = () => {
             <div className="pt-4 pb-2">
               <button 
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="w-full bg-slate-500 text-white py-3 px-4 font-medium text-base rounded-lg hover:bg-slate-600 transition-all duration-200 hover:shadow-md"
+                className="w-full bg-slate-500 text-white py-2 px-4 font-medium text-base rounded-lg hover:bg-slate-600 transition-all duration-200 hover:shadow-md"
               >
                 <Link to={"/LandingAuth"} className="block w-full h-full">
                   Login
