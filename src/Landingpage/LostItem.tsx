@@ -26,9 +26,9 @@ const LostItem: React.FC = () => {
             backgroundRepeat: "no-repeat",
           }}
         >
-          <div className="  text-white  ">
+          <div className="  text-white grid gap-5 ">
             <h1 className=" font-bold text-size-2xl">Verify Before You Buy </h1>
-            <p className=" text-size-lg">
+            <p className=" text-size-md">
               Reporting your lost or stolen device helps protect everyone by
               making it harder to resell and easier for a finder to return it to
               you.

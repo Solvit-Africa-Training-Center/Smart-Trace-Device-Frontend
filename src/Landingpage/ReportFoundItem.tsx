@@ -194,11 +194,11 @@ const ReportFoundItem: React.FC = () => {
         }}
       >
         {" "}
-        <div className="  text-white  ">
+        <div className="  text-white  grid gap-5  ">
           <h1 className=" font-bold text-size-2xl">
             Found a Device? Do the Right Thing.{" "}
           </h1>
-          <p className=" text-size-lg">
+          <p className=" text-size-md">
             You've taken the first step to reuniting a lost device with its
             rightful owner. Use our secure database to check if the device has
             been reported lost or stolen.
@@ -490,10 +490,10 @@ const ReportFoundItem: React.FC = () => {
             className={`px-8 py-3 rounded-md text-white font-medium transition-all ${
               isSubmitting
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700 hover:shadow-lg"
+                : "bg-primaryColor-100 hover:bg-blue-300 hover:shadow-lg"
             }`}
           >
-            {isSubmitting ? "Submitting..." : "Submit Found Item Report"}
+            {isSubmitting ? "Submitting..." : "Submit Found Items"}
           </button>
         </div>
       </form>

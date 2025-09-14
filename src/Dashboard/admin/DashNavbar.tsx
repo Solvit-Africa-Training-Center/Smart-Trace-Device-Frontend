@@ -55,9 +55,7 @@ const UserHeader:React.FC<ToggleProps>= ({ toggleSidebar, isMobile }) => {
             <span className="ml-2 font-bold text-gray-800 text-lg">
               Symart Trace System
             </span>
-            <span className="ml-2 font-semibold text-gray-800 text-sm sm:hidden">
-              DLF
-            </span>
+            
           </div>
         </div>
 

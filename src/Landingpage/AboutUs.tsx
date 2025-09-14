@@ -24,9 +24,9 @@ export default function About() {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className=" font-medium text-[25px]  text-white leading-tight mb-3 sm:mb-3">
+        <div className=" font-medium text-[20px] sm:text-[25px]  text-white leading-tight mb-3 sm:mb-3">
           Connect Lost Gadgets With Their Rightful Owners
-          <p className=" font-normal text-[20px] mt-3">
+          <p className=" font-normal text-[15px] sm:text-[20px] mt-3">
             A safer way to report, find, and verify electronic devices.
           </p>
         </div>
@@ -36,14 +36,14 @@ export default function About() {
           <ReUsableButton label="Submit Found Items" />
         </div>
       </div>
-      
+
       {/* Device Recovery Section */}
       <div className="bg-gray-50 py-8 px-4 sm:py-12 sm:px-6 lg:py-16 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-7 items-center">
             {/* Left side - Content */}
             <div className="order-2 lg:order-1 space-y-4">
-              <h1 className="text-3xl sm:text-3xl lg:text-3xl font-medium text-gray-900 ">
+              <h1 className="text-2xl font-normal text-gray-900 ">
                 Stop Fraud, Reunite Device And Build Trust
               </h1>
 
@@ -77,9 +77,9 @@ export default function About() {
       <div className="bg-[#769EB81A] py-15 px-4 sm:py-15 sm:px-6 lg:py-15 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Section Title */}
-          <h2 className="text-center text-2xl sm:text-2xl lg:text-2xl font-normal text-gray-900 mb-10">
+          <h1 className="text-center text-2xl font-normal text-gray-900 mb-10">
             Our Services
-          </h2>
+          </h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
             <ServiceCard
@@ -105,21 +105,21 @@ export default function About() {
       <div className="bg-white py-16 px-4 sm:py-15 sm:px-6 lg:py-15 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Section Title */}
-          <h2 className="text-center text-2xl sm:text-3xl lg:text-3xl font-normal text-gray-900 mb-1 sm:mb-1 lg:mb-1">
+          <h1 className="text-center text-2xl font-normal text-gray-900 mb-1 sm:mb-1 lg:mb-1">
             WHY WE EXIST &amp;&amp; WHAT WE AIM FOR
-          </h2>
+          </h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left side - Image and Stats */}
             <div className="">
-             <img src={mission} alt="" />
+              <img src={mission} alt="" />
             </div>
 
             {/* Right side - Content */}
             <div className="order-1 lg:order-2 space-y-8">
               {/* Our Mission */}
               <div>
-                <h3 className="text-2xl sm:text-3xl font-normal text-gray-900 mb-4">
+                <h3 className="text-xl font-medium text-gray-900 mb-4">
                   Our Mission
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
@@ -132,7 +132,7 @@ export default function About() {
 
               {/* Our Goals */}
               <div>
-                <h3 className="text-2xl sm:text-3xl font-normal text-gray-900 mb-6">
+                <h3 className="text-xl font-medium  text-gray-900 mb-6">
                   Our Goals
                 </h3>
                 <div className="space-y-4">

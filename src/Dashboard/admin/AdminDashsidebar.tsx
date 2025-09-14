@@ -22,7 +22,7 @@ const AdminDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
   const menuItems = [
     {
       name: "Dashboard",
-      path: "/userdash",
+      path: "/admin",
       icon: <MdHome className="h-4 w-4 mr-3" />,
     },
 
@@ -33,13 +33,13 @@ const AdminDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
     },
     {
       name: "Found Items",
-      path: "userfounditem",
+      path: "adminfounditem",
       icon: <MdOutlineAppSettingsAlt className="h-4 w-4 mr-3" />,
     },
 
     {
       name: "Lost Items",
-      path: "userlostitem",
+      path: "adminlostitem",
       icon: <MdPayment className="h-4 w-4 mr-3" />,
     },
 
@@ -75,8 +75,8 @@ const AdminDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
         <ul className="space-y-2">
           {menuItems.map((item, index) => {
             const isActive =
-              (currentPath === "/userdash" && item.path === "/userdash") ||
-              (item.path !== "/userdash" && currentPath.includes(item.path));
+              (currentPath === "/admin" && item.path === "/admin") ||
+              (item.path !== "/admin" && currentPath.includes(item.path));
 
             return (
               <li key={index}>

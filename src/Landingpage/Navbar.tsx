@@ -5,9 +5,20 @@ import { Link, useLocation } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
 import logo from '../assets/images/logo.jpeg'
 
-interface HeaderProps {}
+interface HeaderProps {
+  id: any;
+}
 
 const Navbar: React.FC<HeaderProps> = () => {
+  
+  const scrollToSection = (id:any) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+  
+  
   const [openBrowseritem, setopenBrowseritem] = useState(false);
   const [open, setOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
@@ -67,34 +78,52 @@ const Navbar: React.FC<HeaderProps> = () => {
   return (
     <header className="w-full fixed z-50">
       {/* Top contact bar - hidd en when scrolled */}
-      <div  className={`hidden sm:block bg-primaryColor-100 text-white py-2 sm:py-3 px-4 sm:px-5 transition-transform duration-300 ${
-    isScrolled ? '-translate-y-full' : 'translate-y-0'
-  }`}>
+      <div
+        className={`hidden sm:block bg-primaryColor-100 text-white py-2 sm:py-3 px-4 sm:px-5 transition-transform duration-300 ${
+          isScrolled ? "-translate-y-full" : "translate-y-0"
+        }`}
+      >
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
           {/* Contact Information */}
           <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-6 lg:space-x-8">
             <div className="flex items-center space-x-2">
               <Mail className="w-3 h-3 sm:w-4 sm:h-4" />
-              <span className="text-xs sm:text-sm font-medium">needhelp@example.com</span>
+              <span className="text-xs sm:text-sm font-medium">
+                needhelp@example.com
+              </span>
             </div>
             <div className="flex items-center space-x-2">
               <Phone className="w-3 h-3 sm:w-4 sm:h-4" />
-              <span className="text-xs sm:text-sm font-medium">Tel: +250 784 127 871</span>
+              <span className="text-xs sm:text-sm font-medium">
+                Tel: +250 784 127 871
+              </span>
             </div>
           </div>
 
           {/* Social media icons */}
           <div className="flex items-center space-x-4 sm:space-x-6 lg:space-x-7">
-            <Link to={""} className="h-3 w-3 sm:h-4 sm:w-4 text-white/80 hover:text-white transition-colors">
+            <Link
+              to={""}
+              className="h-3 w-3 sm:h-4 sm:w-4 text-white/80 hover:text-white transition-colors"
+            >
               <FaXTwitter className="w-full h-full" />
             </Link>
-            <Link to={""} className="h-3 w-3 sm:h-4 sm:w-4 text-white/80 hover:text-white transition-colors">
+            <Link
+              to={""}
+              className="h-3 w-3 sm:h-4 sm:w-4 text-white/80 hover:text-white transition-colors"
+            >
               <FaFacebookF className="w-full h-full" />
             </Link>
-            <Link to={"BBB"} className="h-3 w-3 sm:h-4 sm:w-4 text-white/80 hover:text-white transition-colors">
+            <Link
+              to={"BBB"}
+              className="h-3 w-3 sm:h-4 sm:w-4 text-white/80 hover:text-white transition-colors"
+            >
               <FaYoutube className="w-full h-full" />
             </Link>
-            <Link to={""} className="h-3 w-3 sm:h-4 sm:w-4 text-white/80 hover:text-white transition-colors">
+            <Link
+              to={""}
+              className="h-3 w-3 sm:h-4 sm:w-4 text-white/80 hover:text-white transition-colors"
+            >
               <FaLinkedinIn className="w-full h-full" />
             </Link>
           </div>
@@ -102,16 +131,24 @@ const Navbar: React.FC<HeaderProps> = () => {
       </div>
 
       {/* Main navigation - stays visible */}
-      <div className={`bg-white shadow-lg transition-transform duration-300 ${
-    isScrolled ? 'sm:-translate-y-[60px] lg:-translate-y-[45px]' : 'translate-y-0'
-  }`}>
+      <div
+        className={`bg-white shadow-lg transition-transform duration-300 ${
+          isScrolled
+            ? "sm:-translate-y-[60px] lg:-translate-y-[45px]"
+            : "translate-y-0"
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex justify-between items-center h-16 sm:h-18 lg:h-20">
             {/* Logo */}
             <div className="flex-shrink-0">
               <div className="flex items-center">
                 <div className="w-16 h-8 sm:w-18 sm:h-9 lg:w-20 lg:h-10  rounded flex items-center justify-center overflow-hidden">
-                  <img src={logo} alt="Logo" className="w-full h-full object-contain" />
+                  <img
+                    src={logo}
+                    alt="Logo"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
               </div>
             </div>
@@ -129,7 +166,7 @@ const Navbar: React.FC<HeaderProps> = () => {
                 >
                   Home
                 </Link>
-                
+
                 {/* Submit Items Dropdown */}
                 <div className="relative">
                   <button
@@ -223,7 +260,8 @@ const Navbar: React.FC<HeaderProps> = () => {
                 </div>
 
                 <Link
-                  to={"contact"}
+                  onClick={() => scrollToSection("contact")}
+                  to={"#contact"}
                   className={`font-medium text-sm xl:text-base tracking-wide transition-colors ${
                     isContactActive
                       ? "text-blue-500"
@@ -259,9 +297,13 @@ const Navbar: React.FC<HeaderProps> = () => {
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className={`lg:hidden bg-white border-t border-gray-200 shadow-lg transition-transform duration-300 ${
-          isScrolled ? '-translate-y-[50px] sm:-translate-y-[60px]' : 'translate-y-0'
-        }`}>
+        <div
+          className={`lg:hidden bg-white border-t border-gray-200 shadow-lg transition-transform duration-300 ${
+            isScrolled
+              ? "-translate-y-[50px] sm:-translate-y-[60px]"
+              : "translate-y-0"
+          }`}
+        >
           <div className="px-4 sm:px-6 py-4 space-y-1 max-h-screen overflow-y-auto">
             {/* Mobile Home Link */}
             <Link
@@ -381,7 +423,7 @@ const Navbar: React.FC<HeaderProps> = () => {
 
             {/* Mobile Login Button */}
             <div className="pt-4 pb-2">
-              <button 
+              <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="w-full bg-slate-500 text-white py-2 px-4 font-medium text-base rounded-lg hover:bg-slate-600 transition-all duration-200 hover:shadow-md"
               >

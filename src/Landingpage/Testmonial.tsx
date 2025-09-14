@@ -5,11 +5,11 @@ const TestimonialComponent: React.FC = () => {
     <div className="w-full bg-primaryColor-500 py-16 sm:py-20 lg:py-15">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="text-2xl sm:text-2xl lg:text-2xl font-bold text-gray-900 mb-2 tracking-wide">
+          <h1 className="text-2xl  font-normal text-gray-900 mb-5">
             Testimonials
-          </h2>
+          </h1>
 
-            <p className="text-size-md text-gray-700 mb-9">
+            <p className="text-size-md text-gray-700 mb-12">
               Don't Take Our Word For Our Word For It Trust Our Customers
             </p>
 
