@@ -193,11 +193,11 @@ const ReportLostItem: React.FC = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="  text-white  ">
+        <div className="  text-white grid gap-5  ">
           <h1 className=" font-bold text-size-2xl">
             Report your Lost Device. Help Us Stop Theft.
           </h1>
-          <p className=" text-size-lg">
+          <p className=" text-size-md">
             Reporting your lost or stolen device helps protect everyone by
             making it harder to resell and easier for a finder to return it to
             you.
@@ -489,10 +489,10 @@ const ReportLostItem: React.FC = () => {
             className={`px-8 py-3 rounded-md text-white font-medium transition-all ${
               isSubmitting
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700 hover:shadow-lg"
+                : "bg-primaryColor-100 hover:bg-blue-400 hover:shadow-lg"
             }`}
           >
-            {isSubmitting ? "Submitting..." : "Submit Found Item Report"}
+            {isSubmitting ? "Submitting..." : "Submit Lost Items"}
           </button>
         </div>
       </form>

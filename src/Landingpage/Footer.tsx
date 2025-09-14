@@ -1,6 +1,7 @@
 import React from "react";
 import { MapPin, Phone, Mail} from "lucide-react";
 import { FaLinkedinIn, FaTwitter, FaInstagram, FaFacebookF } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 interface FooterProps {
   className?: string;
@@ -72,11 +73,36 @@ const Footer: React.FC<FooterProps> = () => {
           <h3 className="text-size-lg font-medium">Quick Links</h3>
 
           <div className=" flex flex-col gap-1 ">
-            <p className="text-white text-size-sm">Home</p>
-            <p className="text-white text-size-sm">Lost iTems</p>
-            <p className="text-white text-size-sm">Found Itemms</p>
-            <p className="text-white text-size-sm">Report Lost Items</p>
-            <p className="text-white text-size-sm">Report Found Items</p>
+            <Link
+              to={"/"}
+              className="text-white hover:text-primaryColor-300 text-size-sm"
+            >
+              Home
+            </Link>
+            <Link
+              to={"lostitem"}
+              className="text-white hover:text-primaryColor-300 text-size-sm"
+            >
+              Lost iTems
+            </Link>
+            <Link
+              to={"founditem"}
+              className="text-white hover:text-primaryColor-300 text-size-sm"
+            >
+              Found Itemms
+            </Link>
+            <Link
+              to={"reportlostitem"}
+              className="text-white hover:text-primaryColor-300 text-size-sm"
+            >
+              Report Lost Items
+            </Link>
+            <Link
+              to={"reportfounditem"}
+              className="text-white hover:text-primaryColor-300 text-size-sm"
+            >
+              Report Found Items
+            </Link>
           </div>
         </div>
         <div>

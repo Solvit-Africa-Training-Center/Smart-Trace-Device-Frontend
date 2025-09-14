@@ -421,7 +421,7 @@ const EditModal: React.FC<EditModalProps> = ({
               </h3>
               <button
                 onClick={handleClose}
-                className="flex items-center justify-center h-8 w-8 bg-blue-700 text-white hover:bg-blue-800 transition-colors rounded-md shadow-lg"
+                className="flex items-center justify-center h-8 w-8 bg-primaryColor-100 text-white hover:bg-blue-800 transition-colors rounded-md shadow-lg"
                 type="button"
               >
                 <X size={20} />
@@ -550,7 +550,7 @@ const EditModal: React.FC<EditModalProps> = ({
                 {/* Location */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Location Found *
+                    Location Found
                   </label>
                   <input
                     type="text"
@@ -572,7 +572,7 @@ const EditModal: React.FC<EditModalProps> = ({
                 {/* Date Found */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Date Found *
+                    Date Found
                   </label>
                   <input
                     type="date"
@@ -639,7 +639,7 @@ const EditModal: React.FC<EditModalProps> = ({
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primaryColor-100 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <>
@@ -859,6 +859,7 @@ export default function AdminLostItem(): JSX.Element {
     setItemToEdit(null);
   };
 
+ 
   return (
     <div className="w-full max-w-7xl mx-auto p-3 sm:p-6 bg-white shadow-lg rounded-lg">
       <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 sm:mb-2">

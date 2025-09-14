@@ -10,16 +10,15 @@ import ScrollToTop from "../Landingpage/ScrollTop";
 import UserFoundItem from "../Dashboard/admin/AdminFoundItem";
 import ContactMessagesPage from "../Dashboard/admin/ContactMessages";
 import UserLostItem from "../Dashboard/admin/AdminLostItem";
-import { Users } from "lucide-react";
 import LandingAuth from "../Landingpage/auth";
 import Login from "../Landingpage/login";
 import Signup from "../Landingpage/signup";
 import AdminDashHome from "../Dashboard/admin/AdminDashHome";
-import UserDashHome from "../Dashboard/userDash/UserDashHome";
 import AdminManagement from "../Dashboard/admin/AdminManagement";
 import AdminLostItem from "../Dashboard/admin/AdminFoundItem";
 import AdminDashLayout from "../Dashboard/admin/AdminDashLayout";
-import UserDashLayout from "../Dashboard/userDash/UserDashLayout";
+import UserDashLayout from "../Dashboard/userdash/UserDashLayout";
+import UserDashHome from "../Dashboard/userdash/UserDashHome";
 
 const AppRaute = () => {
   return (
@@ -36,8 +35,8 @@ const AppRaute = () => {
           <Route index element={<AdminDashHome />} />
           <Route path="admin" element={<AdminDashHome />} />
           <Route path="users" element={<AdminManagement />} />
-          <Route path="userfounditem" element={<AdminLostItem />} />
-          <Route path="userlostitem" element={<AdminLostItem />} />
+          <Route path="adminfounditem" element={<AdminLostItem />} />
+          <Route path="adminlostitem" element={<AdminLostItem />} />
           <Route path="message" element={<ContactMessagesPage />} />
         </Route>
 
