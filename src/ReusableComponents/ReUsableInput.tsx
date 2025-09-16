@@ -35,14 +35,10 @@ const ReUsableInput: React.FC<InputProps> = ({
         type={type}
         placeholder={placeholder}
         onChange={onChange}
-        className={`w-full px-3 py-3 border-[1.4px] border-primaryBoderColor rounded-md text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none
- ${
-   error
-     ? "border-red-500 ring-red-200"
-     : "border-primaryBoderColor ring-blue-200"
- }`}
+        className="w-full px-3 py-3 border-[1.4px] border-primaryBoderColor rounded-md text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
+ 
       />
-      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+      {error && <p className="text-red-500 text-xs ">{error}</p>}
     </div>
   );
 };

@@ -1,11 +1,39 @@
 import React from "react";
 import { FaMessage, FaUsers } from "react-icons/fa6";
 import { FaUserDoctor } from "react-icons/fa6";
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import { MdInsertDriveFile } from "react-icons/md";
 import { Link } from "react-router-dom";
 function AdminDashHome() {
   // Sample data for charts
+const revenueData = [
+  { name: "Jan", revenue: 18500 },
+  { name: "Feb", revenue: 21200 },
+  { name: "Mar", revenue: 19800 },
+  { name: "Apr", revenue: 24500 },
+  { name: "May", revenue: 26300 },
+  { name: "Jun", revenue: 24583 },
+];
 
+const usersData = [
+  { name: "Jan", users: 850 },
+  { name: "Feb", users: 920 },
+  { name: "Mar", users: 1050 },
+  { name: "Apr", users: 980 },
+  { name: "May", users: 1200 },
+  { name: "Jun", users: 1100 },
+];
     const users = [
       {
         username: "johndoe",
@@ -107,7 +135,64 @@ function AdminDashHome() {
         </div>
 
         {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+          {/* Revenue Chart */}
+          <div className="bg-white rounded-lg shadow p-4">
+            <h3 className="text-base font-medium text-gray-800 mb-2">
+              Revenue Overview
+            </h3>
+            <div style={{ width: "100%", height: 200 }}>
+              <ResponsiveContainer>
+                <LineChart
+                  data={revenueData}
+                  margin={{
+                    top: 5,
+                    right: 20,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line
+                    type="monotone"
+                    dataKey="revenue"
+                    stroke="#4b7bec"
+                    activeDot={{ r: 6 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
 
+          {/* Users Chart */}
+          <div className="bg-white rounded-lg shadow p-4">
+            <h3 className="text-base font-medium text-gray-800 mb-2">
+              User Statistics
+            </h3>
+            <div style={{ width: "100%", height: 200 }}>
+              <ResponsiveContainer>
+                <BarChart
+                  data={usersData}
+                  margin={{
+                    top: 5,
+                    right: 20,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="users" fill="#20bf6b" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
         {/* Recent Activity Section */}
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <div className="p-4 flex justify-between items-center">

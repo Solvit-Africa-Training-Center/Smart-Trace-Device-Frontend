@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import homei from "../assets/images/home.jpg";
-import {Upload} from "lucide-react";
+import { Upload } from "lucide-react";
 import ReUsableInput from "../ReusableComponents/ReUsableInput";
 import ReUsableSelect from "../ReusableComponents/ReUsableSelect";
+import { useCreateProductMutation } from "../Api/item";
 
 interface FormData {
   title: string;
   dateFound: string;
-  category: string; 
+  category: string;
   timeFound: string;
   brand: string;
   image: File | null;
@@ -45,6 +46,7 @@ const ReportFoundItem: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
+  const [createItem] = useCreateProductMutation();
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -112,17 +114,8 @@ const ReportFoundItem: React.FC = () => {
         }
       });
 
-      // Simulate API call - replace with your actual API endpoint
-      const response = await fetch("/api/found-items", {
-        method: "POST",
-        body: submitData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit form");
-      }
-
-      const result = await response.json();
+      // Use Redux mutation instead of fetch
+      const result = await createItem(submitData).unwrap();
       console.log("Form submitted successfully:", result);
       return true;
     } catch (error) {
@@ -244,6 +237,7 @@ const ReportFoundItem: React.FC = () => {
                 value={formData.title}
                 onChange={handleInputChange}
                 placeholder="Title Of Item Found"
+                
               />
 
               {/* Date Item Found */}

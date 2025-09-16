@@ -9,8 +9,12 @@ import mission from "../assets/images/mission.png";
 import ReUsableButton from "../ReusableComponents/ReUsableButton";
 import ContactUs from "./ContactUs";
 import TestimonialComponent from "./Testmonial";
+import { useGetProductsQuery } from "../Api/item";
+import { Link } from "react-router-dom";
 
 export default function About() {
+  const { data } = useGetProductsQuery();
+  console.log('hhhhhhhhh',data);
   
 
   return (
@@ -32,8 +36,13 @@ export default function About() {
         </div>
         {/* Button container */}
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
-          <ReUsableButton label="Submit Lost Items" />
-          <ReUsableButton label="Submit Found Items" />
+          <Link to="/reportlostitem">
+        
+            <ReUsableButton label="Submit Lost Items" />
+          </Link>
+          <Link to={"/reportfounditem"}>
+            <ReUsableButton label="Submit Found Items" />
+          </Link>
         </div>
       </div>
 

@@ -190,6 +190,7 @@ const Navbar: React.FC<HeaderProps> = () => {
                   {open && (
                     <div className="absolute top-full mt-2 w-44 bg-white border border-gray-200 rounded-lg shadow-xl z-50 overflow-hidden">
                       <Link
+                        onClick={()=>setIsMobileMenuOpen(false)}
                         to="reportlostitem"
                         className={`block px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
                           location.pathname === "/reportlostitem"
@@ -200,6 +201,7 @@ const Navbar: React.FC<HeaderProps> = () => {
                         Lost Items
                       </Link>
                       <Link
+                        onClick={()=>setIsMobileMenuOpen(false)}
                         to="reportfounditem"
                         className={`block px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
                           location.pathname === "/reportfounditem"
@@ -236,6 +238,7 @@ const Navbar: React.FC<HeaderProps> = () => {
                   {openBrowseritem && (
                     <div className="absolute top-full mt-2 w-44 bg-white border border-gray-200 rounded-lg shadow-xl z-50 overflow-hidden">
                       <Link
+                        onClick={()=>setopenBrowseritem(false)}
                         to="lostitem"
                         className={`block px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
                           location.pathname === "/lostitem"
@@ -246,6 +249,7 @@ const Navbar: React.FC<HeaderProps> = () => {
                         Lost Items
                       </Link>
                       <Link
+                        onClick={()=>setopenBrowseritem(false)}
                         to="founditem"
                         className={`block px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
                           location.pathname === "/founditem"
@@ -410,7 +414,7 @@ const Navbar: React.FC<HeaderProps> = () => {
 
             {/* Mobile Contact Link */}
             <Link
-              to="contact"
+              to="/home#contact"
               onClick={() => setIsMobileMenuOpen(false)}
               className={`block font-medium text-base py-3 px-4 rounded-lg transition-all ${
                 isContactActive

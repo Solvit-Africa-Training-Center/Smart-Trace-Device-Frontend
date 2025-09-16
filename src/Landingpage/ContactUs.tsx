@@ -1,18 +1,78 @@
 import React from "react";
 import { PiOfficeChair } from "react-icons/pi";
 import ReUsableInput from "../ReusableComponents/ReUsableInput";
+import { useCreateProductMutation } from "../Api/item";
 
-interface ContactPageProps {}
+interface FormErrors {
+  FirstName?: string;
+  SecondName?: string;
+  Email?: string;
+  Subject?: string;
+  Message?: string;
+}
 
-const ContactUs: React.FC<ContactPageProps> = () => {
+
+const ContactUs: React.FC<FormErrors> = () => {
+  const [createItem] = useCreateProductMutation();
+  const [errors, setErrors] = React.useState<any>({});
+  const [formdata, SetFormdata] = React.useState({
+    FirstName: "",
+    SecondName: "",
+    Email: "",
+    Subject: "",
+    Message: "",
+  });
+
+  const validate = () => {
+    const newerrors: FormErrors = {};
+    if (!formdata.FirstName) {
+      newerrors.FirstName = "First Name is required";
+    }
+    if (!formdata.SecondName) {
+      newerrors.SecondName = "Second Name is required";
+    }
+    if (!formdata.Email) {
+      newerrors.Email = "Email is required";
+    }
+    if (!formdata.Subject) {
+      newerrors.Subject = "Subject is required";
+    }
+    if (!formdata.Message) {
+      newerrors.Message = "Message is required";
+    }
+    setErrors(newerrors);
+    return Object.keys(newerrors).length === 0;
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    SetFormdata({ ...formdata, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
+  };
+
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+   if (!validate()) return;
+    createItem(formdata);
+
+    SetFormdata({
+      FirstName: "",
+      SecondName: "",
+      Email: "",
+      Subject: "",
+      Message: "",
+    });
+    alert("Message sent successfully!");
+
     // Handle form submission logic here
-    console.log("Form submitted");
   };
 
   return (
-    <section id="contact" className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <section
+      id="contact"
+      className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8"
+    >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           {/* Left Section - Get In Touch */}
@@ -93,16 +153,18 @@ const ContactUs: React.FC<ContactPageProps> = () => {
                 <ReUsableInput
                   type="text"
                   placeholder="First Name"
-                  name="firstName"
-                  value=""
-                  onChange={() => {}}
+                  name="FirstName"
+                  value={formdata.FirstName}
+                  onChange={handleChange}
+                  error={errors.FirstName}
                 />
                 <ReUsableInput
                   type="text"
                   placeholder="Second Name"
-                  name="secondName"
-                  value=""
-                  onChange={() => {}}
+                  name="SecondName"
+                  value={formdata.SecondName}
+                  onChange={handleChange}
+                  error={errors.SecondName}
                 />
               </div>
 
@@ -111,26 +173,35 @@ const ContactUs: React.FC<ContactPageProps> = () => {
                 <ReUsableInput
                   type="email"
                   placeholder="Email"
-                  name="email"
-                  value=""
-                  onChange={() => {}}
+                  name="Email"
+                  value={formdata.Email}
+                  onChange={handleChange}
+                  error={errors.Email}
                 />
                 <ReUsableInput
                   type="text"
                   placeholder="Subject"
-                  name="subject"
-                  value=""
-                  onChange={() => {}}
+                  name="Subject"
+                  value={formdata.Subject}
+                  onChange={handleChange}
+                  error={errors.Subject}
                 />
               </div>
 
               {/* Message Field */}
-              <textarea
-                placeholder="Message"
-                rows={6}
-                className="w-full px-5 py-4 border-[1.4px] border-primaryBoderColor rounded-md text-sm text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-              />
-
+              <div className=" flex flex-col gap-2">
+                <textarea
+                  placeholder="Message"
+                  name="Message"
+                  value={formdata.Message}
+                  onChange={handleChange}
+                  rows={6}
+                  className="w-full px-5 py-4 border-[1.4px] border-primaryBoderColor rounded-md text-sm text-gray-600 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 "
+                />
+                {errors.Message && (
+                  <span className="text-red-500 text-xs">{errors.Message}</span>
+                )}
+              </div>
               {/* Submit Button */}
               <button
                 type="button"

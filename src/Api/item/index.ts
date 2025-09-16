@@ -4,13 +4,21 @@ export const productApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query<any, void>({
       query: () => ({
-        url: "/products",
+        url: "/api/devices/lost/list",
         method: "GET",
       }),
     }),
     createProduct: builder.mutation({
       query: (data) => ({
-        url: "/products/add",
+        url: "/api/devices/found",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    PostUser: builder.mutation({
+      query: (data) => ({
+        url: "/api/auth/login",
         method: "POST",
         body: data,
       }),
@@ -37,4 +45,5 @@ export const {
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeletepRODUCTMutation,
+  usePostUserMutation,
 } = productApi;
