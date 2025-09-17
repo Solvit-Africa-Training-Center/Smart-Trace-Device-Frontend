@@ -1,15 +1,22 @@
 import React, { useState } from "react";
-import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Mail, Lock, User, Eye, EyeOff, Backpack } from "lucide-react";
+import { MdLocationPin, MdOutlinePhone } from "react-icons/md";
+import { Link } from 'react-router-dom';
+
+interface FormErrors {
+  username?: string;
+  phonenumber?: string;
+  email?: string;
+  location?: string;
+  password?: string;
+}
 
 interface FormData {
-  username: string;
-  email: string;
-  password: string;
-  first_name: string;
-  last_name: string;
-  phone: string;
+  username?: string;
+  phonenumber?: string;
+  email?: string;
+  location?: string;
+  password?: string;
 }
 
 interface LoginResponse {
@@ -26,6 +33,7 @@ interface SignupResponse {
 }
 
 const LandingAuth: React.FC = () => {
+  const [errors, setErrors] = useState<FormErrors>({});
   const [activeForm, setActiveForm] = useState<"login" | "signup">("signup");
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -33,9 +41,8 @@ const LandingAuth: React.FC = () => {
     username: "",
     email: "",
     password: "",
-    first_name: "",
-    last_name: "",
-    phone: "",
+    phonenumber: "",
+    location: "",
   });
   const [error, setError] = useState<string>("");
 
@@ -45,7 +52,54 @@ const LandingAuth: React.FC = () => {
       ...prev,
       [name]: value,
     }));
+    // Clear specific field error when user starts typing
+    if (errors[name as keyof FormErrors]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
     setError("");
+  };
+
+  const validate = () => {
+    const newErrors: FormErrors = {};
+
+    if (activeForm === "signup") {
+      if (!formData.username?.trim()) {
+        newErrors.username = "Username is required";
+      }
+      if (!formData.email?.trim()) {
+        newErrors.email = "Email is required";
+      } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+        newErrors.email = "Email format is invalid";
+      }
+      if (!formData.phonenumber?.trim()) {
+        newErrors.phonenumber = "Phone number is required";
+      }
+      if (!formData.location?.trim()) {
+        newErrors.location = "Location is required";
+      }
+  
+      if (!formData.password?.trim()) {
+        newErrors.password = "Password is required";
+      } else if (formData.password.length < 6) {
+        newErrors.password = "Password must be at least 6 characters";
+      }
+    } else {
+      // Login validation
+      if (!formData.email?.trim()) {
+        newErrors.email = "Email is required";
+      } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+        newErrors.email = "Email format is invalid";
+      }
+      if (!formData.password?.trim()) {
+        newErrors.password = "Password is required";
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const navigateBasedOnRole = (userRole: string) => {
@@ -74,6 +128,9 @@ const LandingAuth: React.FC = () => {
     e: React.MouseEvent<HTMLButtonElement>
   ): Promise<void> => {
     e.preventDefault();
+
+    if (!validate()) return;
+
     setLoading(true);
     setError("");
 
@@ -100,19 +157,16 @@ const LandingAuth: React.FC = () => {
           localStorage.setItem("authToken", data.token);
         }
 
-        toast.success("Login successful!", {
-          position: "top-right",
-          autoClose: 3000,
-        });
+        // Simulate toast success
+        console.log("Login successful!");
 
         // Reset form
         setFormData({
           username: "",
           email: "",
           password: "",
-          first_name: "",
-          last_name: "",
-          phone: "",
+          location: "",
+          phonenumber: "",
         });
 
         // Navigate based on user role
@@ -124,35 +178,23 @@ const LandingAuth: React.FC = () => {
         const errorMessage =
           data.message || "Login failed. Please check your credentials.";
         setError(errorMessage);
-        toast.error(errorMessage, {
-          position: "top-right",
-          autoClose: 5000,
-        });
       }
     } catch (err) {
       const errorMessage = "Network error. Please try again.";
       setError(errorMessage);
-      toast.error(errorMessage, {
-        position: "top-right",
-        autoClose: 5000,
-      });
       console.error("Login error:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSignup = async (
-    e: React.MouseEvent<HTMLButtonElement>
-  ): Promise<void> => {
-    e.preventDefault();
+  const handleSignup = async (): Promise<void> => {
+    if (!validate()) return;
     setLoading(true);
-    setError("");
 
     try {
-      // Replace with your signup API endpoint
       const response = await fetch(
-        "https://smart-trace-device-backend.onrender.com/api/auth/signup/",
+        "https://smart-trace-device-backend.onrender.com/api/auth/register/",
         {
           method: "POST",
           headers: {
@@ -162,6 +204,8 @@ const LandingAuth: React.FC = () => {
             username: formData.username,
             email: formData.email,
             password: formData.password,
+            phonenumber: formData.phonenumber,
+            location: formData.location,
           }),
         }
       );
@@ -175,30 +219,19 @@ const LandingAuth: React.FC = () => {
           username: "",
           email: "",
           password: "",
-          first_name: "",
-          last_name: "",
-          phone: "",
+          location: "",
+          phonenumber: "",
         });
+        setErrors({});
         setError("");
-        toast.success("Signup successful! Please login.", {
-          position: "top-right",
-          autoClose: 3000,
-        });
+        console.log("Signup successful! Please login.");
       } else {
         const errorMessage = data.message || "Signup failed. Please try again.";
         setError(errorMessage);
-        toast.error(errorMessage, {
-          position: "top-right",
-          autoClose: 5000,
-        });
       }
     } catch (err) {
       const errorMessage = "Network error. Please try again.";
       setError(errorMessage);
-      toast.error(errorMessage, {
-        position: "top-right",
-        autoClose: 5000,
-      });
       console.error("Signup error:", err);
     } finally {
       setLoading(false);
@@ -211,10 +244,10 @@ const LandingAuth: React.FC = () => {
       username: "",
       email: "",
       password: "",
-      first_name: "",
-      last_name: "",
-      phone: "",
+      location: "",
+      phonenumber: "",
     });
+    setErrors({});
     setError("");
     setShowPassword(false);
   };
@@ -226,6 +259,10 @@ const LandingAuth: React.FC = () => {
           {/* Left Section - Dynamic Content */}
           {activeForm === "signup" ? (
             <div className="w-full lg:w-1/2 bg-primaryColor-100 text-white flex flex-col items-center justify-center p-6 sm:p-10">
+              <Link to={"/"} className=" flex">
+                <Backpack className="text-red-300" />
+                <p>Back</p>
+              </Link>
               <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-center">
                 Welcome Back!
               </h2>
@@ -234,7 +271,7 @@ const LandingAuth: React.FC = () => {
               </p>
               <button
                 onClick={() => toggleForm("login")}
-                className="px-6 sm:px-8 py-2 rounded-full border border-white hover:bg-white hover:text-primaryColor-100 transition text-sm sm:text-base"
+                className="px-6 sm:px-8 py-2 rounded-full border border-white hover:bg-white hover:text-blue-600 transition text-sm sm:text-base"
               >
                 Sign In
               </button>
@@ -249,7 +286,7 @@ const LandingAuth: React.FC = () => {
               </p>
               <button
                 onClick={() => toggleForm("signup")}
-                className="px-6 sm:px-8 py-2 rounded-full border border-white hover:bg-white hover:text-primaryColor-100 transition text-sm sm:text-base"
+                className="px-6 sm:px-8 py-2 rounded-full border border-white hover:bg-white hover:text-blue-600 transition text-sm sm:text-base"
               >
                 Sign Up
               </button>
@@ -260,12 +297,12 @@ const LandingAuth: React.FC = () => {
           <div className="w-full lg:w-1/2 bg-white flex flex-col items-center justify-center p-6 sm:p-10">
             {activeForm === "signup" ? (
               <>
-                <h2 className="text-lg sm:text-xl font-medium text-primaryColor-100 mb-6 text-center">
+                <h2 className="text-lg sm:text-xl font-medium text-PrimaryColor-100 mb-4 text-center">
                   Create Account
                 </h2>
 
                 {/* Social Icons */}
-                <div className="flex justify-center space-x-4 sm:space-x-6 mb-6">
+                <div className="flex justify-center space-x-4 sm:space-x-6 mb-3">
                   <button
                     type="button"
                     className="p-2 rounded-full border border-gray-300 text-black hover:bg-gray-100 transition"
@@ -303,7 +340,7 @@ const LandingAuth: React.FC = () => {
                   </button>
                   <button
                     type="button"
-                    className="p-2 rounded-full border border-gray-300 text-blue-600 hover:bg-blue-50 transition"
+                    className="p-2 rounded-full border border-gray-300 text-primaryColor-100 hover:bg-blue-50 transition"
                   >
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5"
@@ -315,84 +352,134 @@ const LandingAuth: React.FC = () => {
                   </button>
                 </div>
 
-                <p className="mb-4 text-xs sm:text-sm text-primaryColor-100 text-center">
-                  or use your email for registration
-                </p>
-
                 {error && (
                   <div className="w-full mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
                     {error}
                   </div>
                 )}
 
-                <div className="w-full flex flex-col gap-3 sm:gap-4">
-                  <div className="flex items-center border-[1.4px] border-primaryColor-100 p-2 sm:p-3 rounded-md">
-                    <User className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 mr-2" />
-                    <input
-                      type="text"
-                      name="username"
-                      value={formData.username}
-                      onChange={handleInputChange}
-                      placeholder="Name"
-                      className="w-full outline-none text-sm sm:text-base"
-                      required
-                    />
+                <div className="w-full flex flex-col gap-3">
+                  <div className="flex flex-col">
+                    <div className="flex items-center border-[1.4px] border-primaryColor-100 p-2 rounded-md">
+                      <User className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 mr-2" />
+                      <input
+                        type="text"
+                        name="username"
+                        value={formData.username || ""}
+                        onChange={handleInputChange}
+                        placeholder="Name"
+                        className="w-full outline-none text-sm sm:text-base"
+                      />
+                    </div>
+                    {errors.username && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.username}
+                      </p>
+                    )}
                   </div>
-                  <div className="flex items-center border-[1.4px] border-primaryColor-100 p-2 sm:p-3 rounded-md">
-                    <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 mr-2" />
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="Email"
-                      className="w-full outline-none text-sm sm:text-base"
-                      required
-                    />
+
+                  <div className="flex flex-col">
+                    <div className="flex items-center border-[1.4px] border-primaryColor-100 p-2 rounded-md">
+                      <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 mr-2" />
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email || ""}
+                        onChange={handleInputChange}
+                        placeholder="Email"
+                        className="w-full outline-none text-sm sm:text-base"
+                      />
+                    </div>
+                    {errors.email && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
-                  <div className="flex items-center border-[1.4px] border-primaryColor-100 p-2 sm:p-3 rounded-md">
-                    <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 mr-2" />
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      name="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      placeholder="Password"
-                      className="w-full outline-none text-sm sm:text-base"
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="ml-2 text-gray-500 hover:text-gray-700"
-                    >
-                      {showPassword ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
-                        <Eye className="w-4 h-4" />
-                      )}
-                    </button>
+
+                  <div className="flex flex-col">
+                    <div className="flex items-center border-[1.4px] border-primaryColor-100 p-2 rounded-md">
+                      <MdLocationPin className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 mr-2" />
+                      <input
+                        type="text"
+                        name="location"
+                        value={formData.location || ""}
+                        onChange={handleInputChange}
+                        placeholder="Location"
+                        className="w-full outline-none text-sm sm:text-base"
+                      />
+                    </div>
+                    {errors.location && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.location}
+                      </p>
+                    )}
                   </div>
+
+                  <div className="flex flex-col">
+                    <div className="flex items-center border-[1.4px] border-primaryColor-100 p-2 rounded-md">
+                      <MdOutlinePhone className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 mr-2" />
+                      <input
+                        type="tel"
+                        name="phonenumber"
+                        value={formData.phonenumber || ""}
+                        onChange={handleInputChange}
+                        placeholder="Phone Number"
+                        className="w-full outline-none text-sm sm:text-base"
+                      />
+                    </div>
+                    {errors.phonenumber && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.phonenumber}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col">
+                    <div className="flex items-center border-[1.4px] border-primaryColor-100 p-2 rounded-md">
+                      <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 mr-2" />
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        value={formData.password || ""}
+                        onChange={handleInputChange}
+                        placeholder="Password"
+                        className="w-full outline-none text-sm sm:text-base"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="ml-2 text-gray-500 hover:text-gray-700"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
+                      </button>
+                    </div>
+                    {errors.password && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.password}
+                      </p>
+                    )}
+                  </div>
+
                   <button
                     type="button"
                     onClick={handleSignup}
-                    disabled={
-                      loading ||
-                      !formData.username ||
-                      !formData.email ||
-                      !formData.password
-                    }
-                    className="px-6 sm:px-8 py-2 rounded-full border border-primaryColor-100 hover:bg-primaryColor-100 hover:text-white text-primaryColor-100 w-full sm:w-1/2 mx-auto transition text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={loading}
+                    className="px-6 sm:px-8 py-2 rounded-full border border-primaryColor-100 hover:bg-PrimaryColor-100 hover:bg-primaryColor-100 hover:text-white text-primaryColor-100 text-primaryColor-100 w-full sm:w-1/2 mx-auto transition text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? "Signing Up..." : "Sign Up"}
                   </button>
                 </div>
-                <p className="mt-4 text-xs sm:text-sm text-gray-600 text-center">
+                <p className="mt-2 text-xs sm:text-sm text-gray-600 text-center">
                   Already have an account?{" "}
                   <button
                     type="button"
                     onClick={() => toggleForm("login")}
-                    className="text-blue-800 hover:underline"
+                    className="text-primaryColor-100 hover:underline"
                   >
                     Sign in
                   </button>
@@ -400,7 +487,7 @@ const LandingAuth: React.FC = () => {
               </>
             ) : (
               <>
-                <h2 className="text-lg sm:text-xl font-medium text-primaryColor-100 mb-6 text-center">
+                <h2 className="text-lg sm:text-xl font-medium text-blue-600 mb-6 text-center">
                   Sign In Into Your Account
                 </h2>
 
@@ -443,7 +530,7 @@ const LandingAuth: React.FC = () => {
                   </button>
                   <button
                     type="button"
-                    className="p-2 rounded-full border border-gray-300 text-blue-600 hover:bg-blue-50 transition"
+                    className="p-2 rounded-full border border-gray-300 text-primaryColor-100 hover:bg-blue-50 transition"
                   >
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5"
@@ -466,45 +553,59 @@ const LandingAuth: React.FC = () => {
                 )}
 
                 <div className="w-full flex flex-col gap-3 sm:gap-4">
-                  <div className="flex items-center border-[1.4px] border-primaryColor-100 p-2 sm:p-3 rounded-md">
-                    <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 mr-2" />
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="Email"
-                      className="w-full outline-none text-sm sm:text-base"
-                      required
-                    />
+                  <div className="flex flex-col">
+                    <div className="flex items-center border-[1.4px] border-primaryColor-100 p-2 sm:p-3 rounded-md">
+                      <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 mr-2" />
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email || ""}
+                        onChange={handleInputChange}
+                        placeholder="Email"
+                        className="w-full outline-none text-sm sm:text-base"
+                      />
+                    </div>
+                    {errors.email && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
-                  <div className="flex items-center border-[1.4px] border-primaryColor-100 p-2 sm:p-3 rounded-md">
-                    <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 mr-2" />
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      name="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      placeholder="Password"
-                      className="w-full outline-none text-sm sm:text-base"
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="ml-2 text-gray-500 hover:text-gray-700"
-                    >
-                      {showPassword ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
-                        <Eye className="w-4 h-4" />
-                      )}
-                    </button>
+
+                  <div className="flex flex-col">
+                    <div className="flex items-center border-[1.4px] border-primaryColor-100 p-2 sm:p-3 rounded-md">
+                      <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 mr-2" />
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        value={formData.password || ""}
+                        onChange={handleInputChange}
+                        placeholder="Password"
+                        className="w-full outline-none text-sm sm:text-base"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="ml-2 text-gray-500 hover:text-gray-700"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
+                      </button>
+                    </div>
+                    {errors.password && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.password}
+                      </p>
+                    )}
                   </div>
+
                   <button
                     type="button"
                     onClick={handleLogin}
-                    disabled={loading || !formData.email || !formData.password}
+                    disabled={loading}
                     className="px-6 sm:px-8 py-2 rounded-full border border-primaryColor-100 hover:bg-primaryColor-100 hover:text-white text-primaryColor-100 w-full sm:w-1/2 mx-auto transition text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? "Signing In..." : "Sign In"}
@@ -515,7 +616,7 @@ const LandingAuth: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => toggleForm("signup")}
-                    className="text-blue-800 hover:underline"
+                    className="text-primaryColor-100 hover:underline"
                   >
                     Sign up
                   </button>
@@ -525,20 +626,6 @@ const LandingAuth: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Toast Container */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </>
   );
 };

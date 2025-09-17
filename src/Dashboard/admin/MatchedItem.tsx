@@ -446,7 +446,7 @@ const EditModal: React.FC<EditModalProps> = ({
                 {/* Item Name */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Item Name 
+                    Item Name
                   </label>
                   <input
                     type="text"
@@ -583,7 +583,7 @@ const EditModal: React.FC<EditModalProps> = ({
                 {/* Description */}
                 <div className="sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Description *
+                    Description 
                   </label>
                   <textarea
                     name="descrption"
@@ -727,7 +727,7 @@ const ReportLostItem: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
   );
 };
 
-export default function AdminLostItem(): JSX.Element {
+export default function MatchedItem(): JSX.Element {
   // Use static data instead of context
   const allItems: LostItem[] = staticLostItems;
 
@@ -831,8 +831,8 @@ export default function AdminLostItem(): JSX.Element {
 
   return (
     <div className="w-full max-w-7xl mx-auto p-3 sm:p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-xl sm:text-xl font-normal text-gray-800 mb-2 sm:mb-2">
-        Lost Items Dashboard
+      <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 sm:mb-2">
+        Matched Items 
       </h1>
 
       {/* Search and filters */}

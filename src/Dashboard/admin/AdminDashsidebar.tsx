@@ -50,7 +50,7 @@ const AdminDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
     },
     {
       name: "Matched",
-      path: "adminsetting",
+      path: "match",
       icon: <CgFormatCenter className="h-5 w-5 mr-3" />,
     },
   ];

@@ -19,6 +19,7 @@ import AdminLostItem from "../Dashboard/admin/AdminFoundItem";
 import AdminDashLayout from "../Dashboard/admin/AdminDashLayout";
 import UserDashLayout from "../Dashboard/userdash/UserDashLayout";
 import UserDashHome from "../Dashboard/userdash/UserDashHome";
+import MatchedItem from "../Dashboard/admin/MatchedItem";
 
 const AppRaute = () => {
   return (
@@ -27,9 +28,9 @@ const AppRaute = () => {
       <Routes>
         <Route path="/LandingAuth" element={<LandingAuth />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup/>} />
+        <Route path="/signup" element={<Signup />} />
 
-          {/* admin */}
+        {/* admin */}
 
         <Route path="/admin" element={<AdminDashLayout />}>
           <Route index element={<AdminDashHome />} />
@@ -38,6 +39,7 @@ const AppRaute = () => {
           <Route path="adminfounditem" element={<AdminLostItem />} />
           <Route path="adminlostitem" element={<AdminLostItem />} />
           <Route path="message" element={<ContactMessagesPage />} />
+          <Route path="match" element={<MatchedItem />} />
         </Route>
 
         {/* userdash */}
@@ -47,7 +49,6 @@ const AppRaute = () => {
           <Route path="userfounditem" element={<UserFoundItem />} />
           <Route path="userlostitem" element={<UserLostItem />} />
         </Route>
-
 
         <Route path="/" element={<Layout />}>
           <Route index element={<About />} />

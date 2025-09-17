@@ -11,12 +11,12 @@ interface FormData {
   timeFound: string;
   brand: string;
   image: File | null;
-  primaryColor: string;
+  recepiet: File |null;
   additionalInfo: string;
   addressType: string;
   state: string;
   cityTown: string;
-  zipcode: string;
+  serialNumber: string;
   firstName: string;
   lastName: string;
   phoneNumber: string;
@@ -31,12 +31,12 @@ const ReportLostItem: React.FC = () => {
     timeFound: "",
     brand: "",
     image: null,
-    primaryColor: "",
+    recepiet: null,
     additionalInfo: "",
     addressType: "",
     state: "",
     cityTown: "",
-    zipcode: "",
+    serialNumber: "",
     firstName: "",
     lastName: "",
     phoneNumber: "",
@@ -156,12 +156,12 @@ const ReportLostItem: React.FC = () => {
           timeFound: "",
           brand: "",
           image: null,
-          primaryColor: "",
+          recepiet: null,
           additionalInfo: "",
           addressType: "",
           state: "",
           cityTown: "",
-          zipcode: "",
+          serialNumber: "",
           firstName: "",
           lastName: "",
           phoneNumber: "",
@@ -270,8 +270,12 @@ const ReportLostItem: React.FC = () => {
                 <option value="laptops">Laptops</option>
                 <option value="tablets">Tablets</option>
                 <option value="cameras">Cameras</option>
-                <option value="audio">Audio Devices (Headphones, Speakers)</option>
-                <option value="accessories">Accessories (Chargers, Cables, etc.)</option>
+                <option value="audio">
+                  Audio Devices (Headphones, Speakers)
+                </option>
+                <option value="accessories">
+                  Accessories (Chargers, Cables, etc.)
+                </option>
                 <option value="other">Other Electronics</option>
               </ReUsableSelect>
 
@@ -289,26 +293,50 @@ const ReportLostItem: React.FC = () => {
 
               {/* Brand */}
 
-              <ReUsableInput
-                label="Brand"
-                type="text"
-                name="brand"
-                value={formData.brand}
-                onChange={handleInputChange}
-                placeholder="Search Brand"
-              />
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Upload Receipt/Proof of Ownership
+                </label>
+                <div className="border-2 border-dashed border-gray-300 rounded-md p-12 lg:p-16 text-center hover:border-gray-400 transition-colors cursor-pointer">
+                  <Upload className="w-6 h-6 text-gray-400 mx-auto mb-2" />
+                  <p className="text-gray-500 text-xs mb-2">
+                    {formData.recepiet
+                      ? formData.recepiet.name
+                      : "Upload Proof of Ownership(eg:invoice,Receipt,etc.)"}
+                  </p>
+                  <input
+                    type="file"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0] || null;
+                      setFormData((prev) => ({
+                        ...prev,
+                        recepiet: file,
+                      }));
+                    }}
+                    accept="application/pdf,image/*"
+                    className="hidden"
+                    id="recepiet-upload"
+                  />
+                  <label
+                    htmlFor="recepiet-upload"
+                    className="cursor-pointer text-sm text-blue-600 hover:text-blue-800"
+                  >
+                    Choose File
+                  </label>
+                </div>
+              </div>
 
               {/* Upload Image */}
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
-                  Upload Image
+                  Upload Device Image
                 </label>
                 <div className="border-2 border-dashed border-gray-300 rounded-md p-12 lg:p-16 text-center hover:border-gray-400 transition-colors cursor-pointer">
                   <Upload className="w-6 h-6 text-gray-400 mx-auto mb-2" />
                   <p className="text-gray-500 text-xs mb-2">
                     {formData.image
                       ? formData.image.name
-                      : "Upload Proof of Ownership(eg:invoice,Receipt,etc.)"}
+                      : "Upload Device Image"}
                   </p>
                   <input
                     type="file"
@@ -319,24 +347,21 @@ const ReportLostItem: React.FC = () => {
                   />
                   <label
                     htmlFor="image-upload"
-                    className="cursor-pointer text-blue-600 hover:text-blue-800"
+                    className="cursor-pointer text-sm text-blue-600 hover:text-blue-800"
                   >
                     Choose File
                   </label>
                 </div>
               </div>
 
-              {/* Primary Color */}
-
               <ReUsableInput
-                label="Primary Color"
+                label="Brand"
                 type="text"
-                name="primaryColor"
-                value={formData.primaryColor}
+                name="brand"
+                value={formData.brand}
                 onChange={handleInputChange}
-                placeholder="Blue color that represent your devices"
+                placeholder="Search Brand"
               />
-
               {/* Additional Information */}
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
@@ -417,13 +442,13 @@ const ReportLostItem: React.FC = () => {
                 placeholder="Please enter the Province"
               />
 
-              {/* Zipcode */}
+              {/* serialNumber */}
 
               <ReUsableInput
                 label="Zip code"
                 type="text"
-                name="zipcode"
-                value={formData.zipcode}
+                name="serialNumber"
+                value={formData.serialNumber}
                 onChange={handleInputChange}
                 placeholder="Zip code"
               />
@@ -496,7 +521,7 @@ const ReportLostItem: React.FC = () => {
             className={`px-8 py-3 rounded-md text-white font-medium transition-all ${
               isSubmitting
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-primaryColor-100 hover:bg-blue-400 hover:shadow-lg"
+                : "bg-recepiet-100 hover:bg-blue-400 hover:shadow-lg"
             }`}
           >
             {isSubmitting ? "Submitting..." : "Submit Lost Items"}

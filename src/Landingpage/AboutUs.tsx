@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 
 export default function About() {
   const { data } = useGetProductsQuery();
-  console.log('hhhhhhhhh',data);
+  console.log('hhhhhhhhhnnnnn',data);
   
 
   return (
