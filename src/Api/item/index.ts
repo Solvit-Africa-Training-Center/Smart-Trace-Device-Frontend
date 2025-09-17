@@ -15,6 +15,13 @@ export const productApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    createcontact: builder.mutation({
+      query: (data) => ({
+        url: "api/devices/contact",
+        method: "POST",
+        body: data,
+      }),
+    }),
 
     PostUser: builder.mutation({
       query: (data) => ({
@@ -46,4 +53,5 @@ export const {
   useUpdateProductMutation,
   useDeletepRODUCTMutation,
   usePostUserMutation,
+  useCreatecontactMutation,
 } = productApi;

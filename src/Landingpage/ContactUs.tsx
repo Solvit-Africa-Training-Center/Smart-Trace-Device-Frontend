@@ -1,44 +1,44 @@
 import React from "react";
+import "react-toastify/dist/ReactToastify.css";
 import { PiOfficeChair } from "react-icons/pi";
+import { toast, ToastContainer } from "react-toastify";
 import ReUsableInput from "../ReusableComponents/ReUsableInput";
-import { useCreateProductMutation } from "../Api/item";
 
 interface FormErrors {
-  FirstName?: string;
-  SecondName?: string;
-  Email?: string;
-  Subject?: string;
-  Message?: string;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  subject?: string;
+  message?: string;
 }
 
-
 const ContactUs: React.FC<FormErrors> = () => {
-  const [createItem] = useCreateProductMutation();
   const [errors, setErrors] = React.useState<any>({});
+  const [isLoading, setIsLoading] = React.useState(false);
   const [formdata, SetFormdata] = React.useState({
-    FirstName: "",
-    SecondName: "",
-    Email: "",
-    Subject: "",
-    Message: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
 
   const validate = () => {
     const newerrors: FormErrors = {};
-    if (!formdata.FirstName) {
-      newerrors.FirstName = "First Name is required";
+    if (!formdata.first_name) {
+      newerrors.first_name = "First Name is required";
     }
-    if (!formdata.SecondName) {
-      newerrors.SecondName = "Second Name is required";
+    if (!formdata.last_name) {
+      newerrors.last_name = "Second Name is required";
     }
-    if (!formdata.Email) {
-      newerrors.Email = "Email is required";
+    if (!formdata.email) {
+      newerrors.email = "email is required";
     }
-    if (!formdata.Subject) {
-      newerrors.Subject = "Subject is required";
+    if (!formdata.subject) {
+      newerrors.subject = "subject is required";
     }
-    if (!formdata.Message) {
-      newerrors.Message = "Message is required";
+    if (!formdata.message) {
+      newerrors.message = "message is required";
     }
     setErrors(newerrors);
     return Object.keys(newerrors).length === 0;
@@ -51,21 +51,41 @@ const ContactUs: React.FC<FormErrors> = () => {
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-   if (!validate()) return;
-    createItem(formdata);
+    if (!validate()) return;
 
-    SetFormdata({
-      FirstName: "",
-      SecondName: "",
-      Email: "",
-      Subject: "",
-      Message: "",
-    });
-    alert("Message sent successfully!");
+    setIsLoading(true);
 
-    // Handle form submission logic here
+    try {
+      const response = await fetch(
+        "https://smart-trace-device-backend.onrender.com/api/devices/contact/",     {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formdata),
+        }
+      );
+
+      if (response.ok) {
+        SetFormdata({
+          first_name: "",
+          last_name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+        toast.success("message sent successfully!");
+      } else {
+        toast.error("Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -144,7 +164,7 @@ const ContactUs: React.FC<FormErrors> = () => {
           {/* Right Section - Contact Form */}
           <div className="bg-primaryColor-400 p-9">
             <h2 className="text-2xl font-normal text-gray-900 mb-5">
-              Leave Your Message
+              Leave Your message
             </h2>
 
             <div className="space-y-4">
@@ -153,18 +173,18 @@ const ContactUs: React.FC<FormErrors> = () => {
                 <ReUsableInput
                   type="text"
                   placeholder="First Name"
-                  name="FirstName"
-                  value={formdata.FirstName}
+                  name="first_name"
+                  value={formdata.first_name}
                   onChange={handleChange}
-                  error={errors.FirstName}
+                  error={errors.first_name}
                 />
                 <ReUsableInput
                   type="text"
                   placeholder="Second Name"
-                  name="SecondName"
-                  value={formdata.SecondName}
+                  name="last_name"
+                  value={formdata.last_name}
                   onChange={handleChange}
-                  error={errors.SecondName}
+                  error={errors.last_name}
                 />
               </div>
 
@@ -172,48 +192,60 @@ const ContactUs: React.FC<FormErrors> = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <ReUsableInput
                   type="email"
-                  placeholder="Email"
-                  name="Email"
-                  value={formdata.Email}
+                  placeholder="email"
+                  name="email"
+                  value={formdata.email}
                   onChange={handleChange}
-                  error={errors.Email}
+                  error={errors.email}
                 />
                 <ReUsableInput
                   type="text"
-                  placeholder="Subject"
-                  name="Subject"
-                  value={formdata.Subject}
+                  placeholder="subject"
+                  name="subject"
+                  value={formdata.subject}
                   onChange={handleChange}
-                  error={errors.Subject}
+                  error={errors.subject}
                 />
               </div>
 
-              {/* Message Field */}
+              {/* message Field */}
               <div className=" flex flex-col gap-2">
                 <textarea
-                  placeholder="Message"
-                  name="Message"
-                  value={formdata.Message}
+                  placeholder="message"
+                  name="message"
+                  value={formdata.message}
                   onChange={handleChange}
                   rows={6}
                   className="w-full px-5 py-4 border-[1.4px] border-primaryBoderColor rounded-md text-sm text-gray-600 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 "
                 />
-                {errors.Message && (
-                  <span className="text-red-500 text-xs">{errors.Message}</span>
+                {errors.message && (
+                  <span className="text-red-500 text-xs">{errors.message}</span>
                 )}
               </div>
               {/* Submit Button */}
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="px-13 py-3 border-[1.4px] border-primaryBoderColor rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                disabled={isLoading}
+                className="px-13 py-3 border-[1.4px] border-primaryBoderColor rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Submit
+                {isLoading ? "Sending..." : "Submit"}
               </button>
             </div>
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </section>
   );
 };
