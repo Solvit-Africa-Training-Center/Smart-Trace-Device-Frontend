@@ -260,13 +260,14 @@ const ReportFoundItem: React.FC = () => {
                 value={formData.category}
                 onChange={handleInputChange}
               >
-                <option value="">Search Category</option>
-                <option value="electronics">Electronics</option>
-                <option value="jewelry">Jewelry</option>
-                <option value="clothing">Clothing</option>
-                <option value="documents">Documents</option>
-                <option value="keys">Keys</option>
-                <option value="other">Other</option>
+                <option value="">Select Electronic Category</option>
+                <option value="phones">Phones</option>
+                <option value="laptops">Laptops</option>
+                <option value="tablets">Tablets</option>
+                <option value="cameras">Cameras</option>
+                <option value="audio">Audio Devices (Headphones, Speakers)</option>
+                <option value="accessories">Accessories (Chargers, Cables, etc.)</option>
+                <option value="other">Other Electronics</option>
               </ReUsableSelect>
 
               {/* Time Found */}
@@ -295,14 +296,14 @@ const ReportFoundItem: React.FC = () => {
               {/* Upload Image */}
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
-                  Upload Image
+                  Upload Image of a device
                 </label>
                 <div className="border-2 border-dashed border-gray-300 rounded-md p-12 lg:p-16 text-center hover:border-gray-400 transition-colors cursor-pointer">
                   <Upload className="w-6 h-6 text-gray-400 mx-auto mb-2" />
                   <p className="text-gray-500 text-xs mb-2">
                     {formData.image
                       ? formData.image.name
-                      : "Upload provided devices"}
+                      : "No file chosen"}
                   </p>
                   <input
                     type="file"
@@ -356,8 +357,8 @@ const ReportFoundItem: React.FC = () => {
               Location Information
             </h2>
             <p className="text-gray-600 mb-8 text-sm lg:text-base">
-              Please be descriptive when reporting found, the more information
-              you give us the better chance when we
+              The more information you share when reporting a found device,
+              the faster we can help return it to its rightful owner!
             </p>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
@@ -368,38 +369,45 @@ const ReportFoundItem: React.FC = () => {
                 value={formData.addressType}
                 onChange={handleInputChange}
               >
-                <option value="">Select Type</option>
-                <option value="home">Home</option>
+                <option value="">Where did you find the device?</option>
+                <option value="Market">Market</option>
                 <option value="work">Work</option>
                 <option value="school">School</option>
                 <option value="park">Park</option>
                 <option value="restaurant">Restaurant</option>
+                <option value="publicTransport">Public Transport</option>
                 <option value="other">Other</option>
               </ReUsableSelect>
 
               {/* State */}
 
               <ReUsableSelect
-                label="State"
-                name="state"
+                label="District"
+                name="District"
                 value={formData.state}
                 onChange={handleInputChange}
               >
-                <option value="">Please select the state</option>
-                <option value="ca">California</option>
-                <option value="ny">New York</option>
-                <option value="tx">Texas</option>
-                <option value="fl">Florida</option>
-                <option value="il">Illinois</option>
-                <option value="pa">Pennsylvania</option>
+                <option value="">Please select the District</option>
+                <option value="ca">Kicukiro</option>
+                <option value="ny">Nyarugenge</option>
+                <option value="tx">Gasabo</option>
+                <option value="fl">Bugesera</option>
+                <option value="il">Kamonyi</option>
+                <option value="pa">Rwamagana</option>
+                <option value="ca">Kayonza</option>
+                <option value="ny">Ngoma</option>
+                <option value="tx">Kirehe</option>
+                <option value="fl">Rusizi</option>
+                <option value="il">Rubavu</option>
+                <option value="pa">Musanze</option>
               </ReUsableSelect>
 
               {/* City/Town */}
 
               <ReUsableInput
-                label="City / Town"
+                label="Province"
                 type="text"
-                name="cityTown"
+                name="Province"
                 value={formData.cityTown}
                 onChange={handleInputChange}
                 placeholder="Please select City/Town"

@@ -230,8 +230,8 @@ const ReportLostItem: React.FC = () => {
               LostItem Information
             </h2>
             <p className="text-gray-600 mb-8 text-sm lg:text-base">
-              Please be descriptive when reporting found, the more information
-              you give us the better chance when we
+              Please be descriptive when reporting your lost or stolen device.
+              The more details you provide, the easier it will be to assist you.
             </p>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-7">
@@ -265,13 +265,14 @@ const ReportLostItem: React.FC = () => {
                 value={formData.category}
                 onChange={handleInputChange}
               >
-                <option value="">Search Category</option>
-                <option value="electronics">Electronics</option>
-                <option value="jewelry">Jewelry</option>
-                <option value="clothing">Clothing</option>
-                <option value="documents">Documents</option>
-                <option value="keys">Keys</option>
-                <option value="other">Other</option>
+                <option value="">Select Electronic Category</option>
+                <option value="phones">Phones</option>
+                <option value="laptops">Laptops</option>
+                <option value="tablets">Tablets</option>
+                <option value="cameras">Cameras</option>
+                <option value="audio">Audio Devices (Headphones, Speakers)</option>
+                <option value="accessories">Accessories (Chargers, Cables, etc.)</option>
+                <option value="other">Other Electronics</option>
               </ReUsableSelect>
 
               {/* Time Found */}
@@ -307,7 +308,7 @@ const ReportLostItem: React.FC = () => {
                   <p className="text-gray-500 text-xs mb-2">
                     {formData.image
                       ? formData.image.name
-                      : "Upload provided devices"}
+                      : "Upload Proof of Ownership(eg:invoice,Receipt,etc.)"}
                   </p>
                   <input
                     type="file"
@@ -373,7 +374,7 @@ const ReportLostItem: React.FC = () => {
                 value={formData.addressType}
                 onChange={handleInputChange}
               >
-                <option value="">Select Type</option>
+                <option value="">Where did you lose your device?</option>
                 <option value="home">Home</option>
                 <option value="work">Work</option>
                 <option value="school">School</option>
@@ -385,29 +386,35 @@ const ReportLostItem: React.FC = () => {
               {/* State */}
 
               <ReUsableSelect
-                label="State"
-                name="state"
+                label="District"
+                name="District"
                 value={formData.state}
                 onChange={handleInputChange}
               >
-                <option value="">Please select the state</option>
-                <option value="ca">California</option>
-                <option value="ny">New York</option>
-                <option value="tx">Texas</option>
-                <option value="fl">Florida</option>
-                <option value="il">Illinois</option>
-                <option value="pa">Pennsylvania</option>
+                <option value="">Please select the District</option>
+                <option value="ca">Kicukiro</option>
+                <option value="ny">Nyarugenge</option>
+                <option value="tx">Gasabo</option>
+                <option value="fl">Bugesera</option>
+                <option value="il">Kamonyi</option>
+                <option value="pa">Rwamagana</option>
+                <option value="ca">Kayonza</option>
+                <option value="ny">Ngoma</option>
+                <option value="tx">Kirehe</option>
+                <option value="fl">Rusizi</option>
+                <option value="il">Rubavu</option>
+                <option value="pa">Musanze</option>
               </ReUsableSelect>
 
               {/* City/Town */}
 
               <ReUsableInput
-                label="City / Town"
+                label="Province"
                 type="text"
-                name="cityTown"
+                name="Province"
                 value={formData.cityTown}
                 onChange={handleInputChange}
-                placeholder="Please select City/Town"
+                placeholder="Please enter the Province"
               />
 
               {/* Zipcode */}
