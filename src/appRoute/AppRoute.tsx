@@ -11,8 +11,6 @@ import UserFoundItem from "../Dashboard/admin/AdminFoundItem";
 import ContactMessagesPage from "../Dashboard/admin/ContactMessages";
 import UserLostItem from "../Dashboard/admin/AdminLostItem";
 import LandingAuth from "../Landingpage/auth";
-import Login from "../Landingpage/login";
-import Signup from "../Landingpage/signup";
 import AdminDashHome from "../Dashboard/admin/AdminDashHome";
 import AdminManagement from "../Dashboard/admin/AdminManagement";
 import AdminLostItem from "../Dashboard/admin/AdminFoundItem";
@@ -27,8 +25,6 @@ const AppRaute = () => {
       <ScrollToTop />
       <Routes>
         <Route path="/LandingAuth" element={<LandingAuth />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
 
         {/* admin */}
 
@@ -59,6 +55,7 @@ const AppRaute = () => {
           <Route path="reportlostitem" element={<ReportLostItem />} />
         </Route>
       </Routes>
+      
     </BrowserRouter>
   );
 };

@@ -156,17 +156,10 @@ const LandingAuth: React.FC = () => {
         if (data.token) {
           localStorage.setItem("authToken", data.token);
         }
-
-        // Simulate toast success
-        console.log("Login successful!");
-
-        // Reset form
         setFormData({
-          username: "",
           email: "",
           password: "",
-          location: "",
-          phonenumber: "",
+          
         });
 
         // Navigate based on user role
