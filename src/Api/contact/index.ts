@@ -8,6 +8,8 @@ export const productApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+  
+
     createcontact: builder.mutation({
       query: (data) => ({
         url: "api/devices/contact",
@@ -15,10 +17,25 @@ export const productApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    deletecontact: builder.mutation({
+      query: (id) => ({
+        url: `/api/devices/contact/${id}/`,
+        method: "DELETE",
+      }),
+    }),
+
+    deleteMatchitem: builder.mutation({
+      query: (id) => ({
+        url: `api/devices/matches/${id}/delete/`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
 export const {
- useGetContactQuery,
+  useGetContactQuery,
   useCreatecontactMutation,
+  useDeletecontactMutation,
+  useDeleteMatchitemMutation,
 } = productApi;

@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { PiOfficeChair } from "react-icons/pi";
 import { toast, ToastContainer } from "react-toastify";
 import ReUsableInput from "../ReusableComponents/ReUsableInput";
-import { useGetContactQuery } from "../Api/contact";
+import { MdOutlineLocationOn } from "react-icons/md";
 
 interface FormErrors {
   first_name?: string;
@@ -89,24 +89,18 @@ const ContactUs: React.FC<FormErrors> = () => {
     }
   };
 
-  const { data } = useGetContactQuery();
-  console.log("contactttttttt", data);
+ 
   return (
     <section
       id="contact"
       className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8"
     >
-      {data?.map((item: any) => (
-        <div>
-          <p>{item.first_name}</p>
-        </div>
-      ))}
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           {/* Left Section - Get In Touch */}
           <div className="space-y-8">
             <div>
-              <h1 className="text-3xl font-normal text-gray-900 mb-6">
+              <h1 className="text-3xl font-medium  my-6 text-primaryColor-100 ">
                 Get In Touch
               </h1>
               <p className="text-gray-600 leading-relaxed">
@@ -118,10 +112,11 @@ const ContactUs: React.FC<FormErrors> = () => {
 
             {/* Head Office */}
             <div className="flex items-start space-x-4">
-              <div className="w-16 h-16 rounded-full border border-gray-300 flex items-center justify-center flex-shrink-0">
-                <div className="w-6 h-6 text-gray-600">
-                  <PiOfficeChair />
-                </div>
+              <div className="w-16 h-16 rounded-full border border-primaryColor-100 flex items-center justify-center flex-shrink-0">
+                <PiOfficeChair
+                  size={35}
+                  className="text-primaryColor-100 font-normal"
+                />
               </div>
               <div>
                 <h3 className="text-xl font-normal text-gray-900 mb-2">
@@ -133,28 +128,11 @@ const ContactUs: React.FC<FormErrors> = () => {
 
             {/* Location */}
             <div className="flex items-start space-x-4">
-              <div className="w-16 h-16 rounded-full border border-gray-300 flex items-center justify-center flex-shrink-0">
-                <div className="w-6 h-6 text-gray-600">
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    className="w-full h-full"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                </div>
+              <div className="w-16 h-16 rounded-full border border-primaryColor-100 flex items-center justify-center flex-shrink-0">
+                <MdOutlineLocationOn
+                  size={35}
+                  className="text-primaryColor-100 font-normal"
+                />
               </div>
               <div>
                 <h3 className="text-xl font-normal text-gray-900 mb-2">
@@ -170,10 +148,10 @@ const ContactUs: React.FC<FormErrors> = () => {
           </div>
 
           {/* Right Section - Contact Form */}
-          <div className="bg-primaryColor-400 p-9">
-            <h2 className="text-2xl font-normal text-gray-900 mb-5">
-              Leave Your message
-            </h2>
+          <div className="bg-[#f0f9ff] rounded-3xl  p-9">
+            <h1 className="text-3xl font-medium mb-5  text-primaryColor-100">
+              Leave Your Message
+            </h1>
 
             <div className="space-y-4">
               {/* First Row */}

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import homei from "../assets/images/home.jpg";
 import { Upload } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import ReUsableInput from "../ReusableComponents/ReUsableInput";
@@ -36,7 +35,7 @@ interface FormData {
   deviceimage: File | null;
 }
 
-const ReportFoundItem: React.FC = () => {
+const FoundItemForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     category: "",
@@ -188,7 +187,7 @@ const ReportFoundItem: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className=" overflow-y-auto h-[90vh] bg-gray-50 rounded-2xl ">
       {/* Hero Section */}
       {/* <div
         className="h-screen flex flex-col items-center justify-center gap-10 py-20 px-4 md:px-16 lg:px-60 text-center text-white bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900"
@@ -211,30 +210,7 @@ const ReportFoundItem: React.FC = () => {
           </p>{" "}
         </div>
       </div> */}
-      <div
-        className="relative h-[70vh] md:h-[75vh] lg:h-[80vh] flex flex-col items-center justify-center gap-10 px-4 md:px-16 lg:px-60 text-center text-white overflow-hidden"
-        style={{
-          background: `linear-gradient(rgba(41, 108, 181, 0.65), rgba(2, 17, 32, 0.84)), url(${homei})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[3px]"></div>
-        <div className="relative z-10 font-medium text-[20px] sm:text-[25px] text-white leading-tight mb-3 sm:mb-3">
-          <div className="text-white grid gap-5">
-          <p className=" font-normal  mt-2 text-3xl leading-snug drop-shadow-md">
-              Found a Device? Do the Right Thing.{" "}
-            </p>
-            <p className="text-lg md:text-xl">
-              You've taken the first step to reuniting a lost device with its
-              rightful owner. Use our secure database to check if the device has
-              been reported lost or stolen.
-            </p>{" "}
-          </div>
-        </div>
-      </div>
-      {/* Main Content */}
+
       <form
         onSubmit={handleSubmit}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12"
@@ -244,15 +220,12 @@ const ReportFoundItem: React.FC = () => {
         {/* Found Item Information Section */}
         <div className="bg-white rounded-lg shadow-sm mb-8">
           <div className="p-6 lg:p-8">
-            <h2 className="text-xl lg:text-2xl font-semibold text-gray-900 mb-2">
+            <h2 className="text-xl font-bold text-gray-900 mb-2">
               Found Item Information
             </h2>
-            <p className="text-gray-600 mb-8 text-sm lg:text-base">
-              The more information you share when reporting a found device, the
-              faster we can help return it to its rightful owner!
-            </p>
+           
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-7">
+            <div className="flex flex-col gap-3">
               {/* Name */}
               <div>
                 <ReUsableInput
@@ -323,7 +296,7 @@ const ReportFoundItem: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700">
                   Upload Image of the device
                 </label>
-                <div className="border-2 border-dashed border-gray-300 rounded-md p-12 lg:p-16 text-center hover:border-gray-400 transition-colors cursor-pointer">
+                <div className="border-2 border-dashed border-gray-300 rounded-md px-12 py-5  text-center hover:border-gray-400 transition-colors cursor-pointer">
                   <Upload className="w-6 h-6 text-gray-400 mx-auto mb-2" />
                   <p className="text-gray-500 text-xs mb-2">
                     {formData.deviceimage
@@ -387,15 +360,11 @@ const ReportFoundItem: React.FC = () => {
         {/* Location Information Section */}
         <div className="bg-white rounded-lg shadow-sm mb-8">
           <div className="p-6 lg:p-8">
-            <h2 className="text-xl lg:text-2xl font-semibold text-gray-900 mb-2">
+            <h2 className="text-xl  font-semibold text-gray-900 mb-2">
               Location Information
             </h2>
-            <p className="text-gray-600 mb-8 text-sm lg:text-base">
-              Please be descriptive when reporting found, the more information
-              you give us the better chance when we
-            </p>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            <div className="flex flex-col gap-3 ">
               {/* Address */}
               <div>
                 <ReUsableSelect
@@ -465,15 +434,11 @@ const ReportFoundItem: React.FC = () => {
         {/* Contact Information Section */}
         <div className="bg-white rounded-lg shadow-sm mb-8">
           <div className="p-6 lg:p-8">
-            <h2 className="text-xl lg:text-2xl font-semibold text-gray-900 mb-2">
+            <h2 className="text-xl font-bold text-gray-900 mb-2">
               Contact Information
             </h2>
-            <p className="text-gray-600 mb-8 text-sm lg:text-base">
-              Providing your details is optional but helps us facilitate the
-              return. We will not share your information publicly
-            </p>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            <div className=" flex flex-col gap-3">
               {/* First Name */}
               <div>
                 <ReUsableInput
@@ -561,4 +526,4 @@ const ReportFoundItem: React.FC = () => {
   );
 };
 
-export default ReportFoundItem;
+export default FoundItemForm;

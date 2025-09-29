@@ -4,13 +4,11 @@ import {
   MdHome,
   MdOutlineAppSettingsAlt,
   MdOutlineLogout,
-  MdPayment
+  MdPayment,
+  MdReport
 } from "react-icons/md";
 import logo from '../../assets/images/logo.jpeg'
-import { TbUsers } from "react-icons/tb";
-import { LuMessageSquareText } from "react-icons/lu";
-import { CgFormatCenter } from "react-icons/cg";
-
+import { useAuth } from "../../context/AuthContext";
 
 interface ToggleProps{
   isOpen: any;
@@ -40,11 +38,11 @@ const UserDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
       icon: <MdPayment className="h-4 w-4 mr-3" />,
     },
 
-    // {
-    //   name: "Matched",
-    //   path: "adminsetting",
-    //   icon: <CgFormatCenter className="h-5 w-5 mr-3" />,
-    // },
+    {
+      name: "Report",
+      path: "report",
+      icon: <MdReport className="h-5 w-5 mr-3" />,
+    },
   ];
 
   const handleNavClick = (path: To) => {
@@ -55,6 +53,8 @@ const UserDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
       toggleSidebar();
     }
   };
+
+  const { logout } = useAuth();
 
   return (
     <aside
@@ -87,9 +87,11 @@ const UserDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
             );
           })}
         </ul>
-        <div className=" text-red-500 flex items-center mt-20 ml-6">
+        <div className=" text-red-500 flex items-center mt-40 ml-6">
           <MdOutlineLogout className=" h-5 w-5 mr-3" />
-          <Link to={"/"} className=" mb-1">
+          <Link
+            onClick={logout}
+            to={"#"} className=" mb-1">
             Logout
           </Link>
         </div>
