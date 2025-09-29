@@ -831,7 +831,7 @@ export default function AdminLostItem(): JSX.Element {
 
   return (
     <div className="w-full max-w-7xl mx-auto p-3 sm:p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 sm:mb-2">
+      <h1 className="text-xl sm:text-xl font-normal text-gray-800 mb-2 sm:mb-2">
         Lost Items Dashboard
       </h1>
 

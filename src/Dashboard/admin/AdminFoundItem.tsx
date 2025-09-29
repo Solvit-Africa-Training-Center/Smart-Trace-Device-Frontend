@@ -1,8 +1,8 @@
 // Item Card component for mobile view
 import { useEffect, useState, type JSX } from "react";
+import Notiflix from "notiflix";
 import {
   Search,
-  Plus,
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
@@ -11,26 +11,28 @@ import {
   Trash2,
   X,
   Save,
+  Plus,
 } from "lucide-react";
+import { toast } from "react-toastify";
+import { useDeleteFounditemMutation, useGetFounditemQuery } from "../../Api/founditem";
+import FoundItemForm from "../../Landingpage/FoundItemForm";
 
 // TypeScript interfaces
 interface LostItem {
-  _id: string;
   id: string;
-  itemName: string;
-  ownerName: string;
-  ownerEmail: string;
-  ownerPhone: string;
+  name: string;
+  category: string;
+  description: string;
+  serialnumber: string;
+  founderEmail: string;
   location: string;
-  date: string;
-  itemSerial: string;
-  descrption: string;
-  itemImage: string;
-  category?: string;
-  dateFound?: string;
-  foundBy?: string;
-  contact?: string;
-  description?: string;
+  phoneNumber: string;
+  firstName: string;
+  address: string;
+  province: string;
+  district: string;
+  lastName: string;
+  deviceimage: string;
 }
 
 interface EditModalProps {
@@ -40,153 +42,41 @@ interface EditModalProps {
   onSave: (item: LostItem) => void;
 }
 
-interface ItemCardProps {
-  item: LostItem;
-  onEdit: (item: LostItem) => void;
-  onDelete: (id: string) => void;
-}
 
 interface FormData {
-  itemName: string;
-  ownerName: string;
-  ownerEmail: string;
-  ownerPhone: string;
+  name: string;
+  category: string;
+  description: string;
+  serialnumber: string;
+  founderEmail: string;
   location: string;
-  date: string;
-  itemSerial: string;
-  descrption: string;
-  itemImage: string;
+  phoneNumber: string;
+  firstName: string;
+  address: string;
+  province: string;
+  district: string;
+  lastName: string;
+  deviceimage: string;
 }
 
 interface FormErrors {
-  general?: string;
-  itemName?: string;
-  ownerEmail?: string;
+  name?: string;
+  category?: string;
+  description?: string;
+  serialnumber?: string;
+  founderEmail?: string;
   location?: string;
-  date?: string;
-  itemSerial?: string;
-  descrption?: string;
-  itemImage?: string;
+  firstName?: string;
+  address?: string;
+  province?: string;
+  district?: string;
+  lastName?: string;
   [key: string]: string | undefined;
 }
 
 // Static data for demonstration
-const staticLostItems: LostItem[] = [
-  {
-    _id: "1",
-    id: "1",
-    itemName: "iPhone 13 Pro",
-    ownerName: "John Smith",
-    ownerEmail: "john.smith@email.com",
-    ownerPhone: "+1234567890",
-    location: "Central Park, New York",
-    date: "2024-01-15",
-    dateFound: "2024-01-15",
-    itemSerial: "APL123456789",
-    descrption:
-      "Black iPhone 13 Pro with a cracked screen protector. Found near the fountain area.",
-    itemImage:
-      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
-    category: "Electronics",
-    foundBy: "John Smith",
-    contact: "+1234567890",
-  },
-  {
-    _id: "2",
-    id: "2",
-    itemName: "Blue Backpack",
-    ownerName: "Sarah Johnson",
-    ownerEmail: "sarah.j@email.com",
-    ownerPhone: "+1987654321",
-    location: "University Library",
-    date: "2024-01-20",
-    dateFound: "2024-01-20",
-    itemSerial: "BP789123456",
-    descrption:
-      "Navy blue backpack with laptop compartment. Contains some books and notebooks.",
-    itemImage:
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400",
-    category: "Bags",
-    foundBy: "Sarah Johnson",
-    contact: "+1987654321",
-  },
-  {
-    _id: "3",
-    id: "3",
-    itemName: "Silver Watch",
-    ownerName: "Mike Wilson",
-    ownerEmail: "mike.wilson@email.com",
-    ownerPhone: "+1122334455",
-    location: "Coffee Shop Downtown",
-    date: "2024-02-01",
-    dateFound: "2024-02-01",
-    itemSerial: "SW456789123",
-    descrption:
-      "Elegant silver watch with leather strap. Left on table 5 in the coffee shop.",
-    itemImage:
-      "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400",
-    category: "Jewelry",
-    foundBy: "Mike Wilson",
-    contact: "+1122334455",
-  },
-  {
-    _id: "4",
-    id: "4",
-    itemName: "Red Wallet",
-    ownerName: "Emma Davis",
-    ownerEmail: "emma.davis@email.com",
-    ownerPhone: "+1555666777",
-    location: "Shopping Mall",
-    date: "2024-02-10",
-    dateFound: "2024-02-10",
-    itemSerial: "RW987654321",
-    descrption:
-      "Red leather wallet found in the food court area. Contains some cards and cash.",
-    itemImage:
-      "https://images.unsplash.com/photo-1627123424574-724758594e93?w=400",
-    category: "Accessories",
-    foundBy: "Emma Davis",
-    contact: "+1555666777",
-  },
-  {
-    _id: "5",
-    id: "5",
-    itemName: "Kindle E-Reader",
-    ownerName: "David Brown",
-    ownerEmail: "david.brown@email.com",
-    ownerPhone: "+1888999000",
-    location: "Bus Station",
-    date: "2024-02-15",
-    dateFound: "2024-02-15",
-    itemSerial: "KE321654987",
-    descrption:
-      "Black Kindle e-reader with protective case. Found on bench at bus station platform 3.",
-    itemImage:
-      "https://images.unsplash.com/photo-1592496431122-2349e0fbc666?w=400",
-    category: "Electronics",
-    foundBy: "David Brown",
-    contact: "+1888999000",
-  },
-  {
-    _id: "6",
-    id: "6",
-    itemName: "Sunglasses",
-    ownerName: "Lisa Anderson",
-    ownerEmail: "lisa.anderson@email.com",
-    ownerPhone: "+1777888999",
-    location: "Beach Boardwalk",
-    date: "2024-02-20",
-    dateFound: "2024-02-20",
-    itemSerial: "SG159753468",
-    descrption:
-      "Designer sunglasses with black frames. Found near the ice cream stand on the boardwalk.",
-    itemImage:
-      "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400",
-    category: "Accessories",
-    foundBy: "Lisa Anderson",
-    contact: "+1777888999",
-  },
-];
+
+
 
 const EditModal: React.FC<EditModalProps> = ({
   item,
@@ -195,45 +85,41 @@ const EditModal: React.FC<EditModalProps> = ({
   onSave,
 }) => {
   const [formData, setFormData] = useState<FormData>({
-    itemName: "",
-    ownerName: "",
-    ownerEmail: "",
-    ownerPhone: "",
+    name: "",
+    category: "",
+    description: "",
+    serialnumber: "",
+    founderEmail: "",
     location: "",
-    date: "",
-    itemSerial: "",
-    descrption: "",
-    itemImage: "",
+    phoneNumber: "",
+    firstName: "",
+    address: "",
+    province: "",
+    district: "",
+    lastName: "",
+    deviceimage: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Helper function to convert datetime to date format
-  const formatDateForInput = (dateString: string): string => {
-    if (!dateString) return "";
-    try {
-      const date = new Date(dateString);
-      return date.toISOString().split("T")[0];
-    } catch (error) {
-      console.error("Error formatting date:", error);
-      return "";
-    }
-  };
-
   // Initialize form data when item changes
   useEffect(() => {
     if (item && isOpen) {
       setFormData({
-        itemName: item.itemName || "",
-        ownerName: item.ownerName || "",
-        ownerEmail: item.ownerEmail || "",
-        ownerPhone: item.ownerPhone || "",
+        name: item.name || "",
+        firstName: item.firstName || "",
+        lastName: item.lastName || "",
+        founderEmail: item.founderEmail || "",
+        phoneNumber: item.phoneNumber || "",
         location: item.location || "",
-        date: formatDateForInput(item.date || item.date),
-        itemSerial: item.itemSerial || item.itemSerial || "",
-        descrption: item.descrption || item.descrption || "",
-        itemImage: item.itemImage || "",
+        district: item.district || "",
+        province: item.province || "",
+        address: item.address || "",
+        category: item.category || "",
+        serialnumber: item.serialnumber || "",
+        description: item.description || "",
+        deviceimage: item.deviceimage || "",
       });
       setErrors({});
     }
@@ -266,7 +152,7 @@ const EditModal: React.FC<EditModalProps> = ({
       if (file.size > 5 * 1024 * 1024) {
         setErrors((prev) => ({
           ...prev,
-          itemImage: "File size must be less than 5MB",
+          deviceimage: "File size must be less than 5MB",
         }));
         return;
       }
@@ -275,7 +161,7 @@ const EditModal: React.FC<EditModalProps> = ({
       if (!file.type.startsWith("image/")) {
         setErrors((prev) => ({
           ...prev,
-          itemImage: "Please select a valid image file",
+          deviceimage: "Please select a valid image file",
         }));
         return;
       }
@@ -284,12 +170,12 @@ const EditModal: React.FC<EditModalProps> = ({
       reader.onload = (e) => {
         setFormData((prev) => ({
           ...prev,
-          itemImage: e.target?.result as string,
+          deviceimage: e.target?.result as string,
         }));
         // Clear any previous image errors
         setErrors((prev) => ({
           ...prev,
-          itemImage: "",
+          deviceimage: "",
         }));
       };
       reader.readAsDataURL(file);
@@ -301,31 +187,31 @@ const EditModal: React.FC<EditModalProps> = ({
     const newErrors: FormErrors = {};
 
     // Check if fields exist and are not empty
-    if (!formData.itemName || !formData.itemName.trim()) {
-      newErrors.itemName = "Item name is required";
+    if (!formData.name || !formData.name.trim()) {
+      newErrors.name = "Item name is required";
     }
 
     if (!formData.location || !formData.location.trim()) {
       newErrors.location = "Location is required";
     }
 
-    if (!formData.date || !formData.date.trim()) {
-      newErrors.date = "Date found is required";
+    if (!formData.lastName || !formData.lastName.trim()) {
+      newErrors.lastName = "Last name is required";
     }
 
-    if (!formData.itemSerial || !formData.itemSerial.trim()) {
-      newErrors.itemSerial = "Serial number is required";
+    if (!formData.serialnumber || !formData.serialnumber.trim()) {
+      newErrors.serialnumber = "Serial number is required";
     }
 
-    if (!formData.descrption || !formData.descrption.trim()) {
-      newErrors.descrption = "Description is required";
+    if (!formData.description || !formData.description.trim()) {
+      newErrors.description = "Description is required";
     }
 
     // Validate email format if provided
-    if (formData.ownerEmail && formData.ownerEmail.trim()) {
+    if (formData.founderEmail && formData.founderEmail.trim()) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(formData.ownerEmail)) {
-        newErrors.ownerEmail = "Please enter a valid email address";
+      if (!emailRegex.test(formData.founderEmail)) {
+        newErrors.founderEmail = "Please enter a valid email address";
       }
     }
 
@@ -341,8 +227,8 @@ const EditModal: React.FC<EditModalProps> = ({
       return;
     }
 
-    // Fixed: Properly access the item ID
-    const itemId = item?._id || item?.id;
+    // Get the item ID
+    const itemId = item?.id || item?.id;
 
     if (!item || !itemId) {
       console.error("Item ID is required for editing. Item:", item);
@@ -356,25 +242,43 @@ const EditModal: React.FC<EditModalProps> = ({
     setIsLoading(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
       // Prepare data for API call
-      const updateData: LostItem = {
-        ...item,
-        itemName: formData.itemName,
-        ownerName: formData.ownerName,
-        ownerEmail: formData.ownerEmail,
-        ownerPhone: formData.ownerPhone,
+      const updateData = {
+        name: formData.name,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        founderEmail: formData.founderEmail,
+        phoneNumber: formData.phoneNumber,
         location: formData.location,
-        date: formData.date,
-        itemSerial: formData.itemSerial,
-        descrption: formData.descrption,
-        itemImage: formData.itemImage,
+        district: formData.district,
+        province: formData.province,
+        address: formData.address,
+        category: formData.category,
+        serialnumber: formData.serialnumber,
+        description: formData.description,
+        deviceimage: formData.deviceimage,
       };
 
-      // Call the onSave callback with updated data
-      onSave(updateData);
+      // Make API call to update the found item
+      const response = await fetch(
+        `https://smart-trace-device-backend.onrender.com/api/devices/found/${itemId}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updateData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const updatedItem = await response.json();
+
+      // Call the onSave callback with updated data from API response
+      onSave(updatedItem);
 
       // Close modal
       onClose();
@@ -382,7 +286,8 @@ const EditModal: React.FC<EditModalProps> = ({
       console.error("Error updating item:", error);
       setErrors((prev) => ({
         ...prev,
-        general: "Failed to update item. Please try again.",
+        general:
+          "Failed to update item. Please check your connection and try again.",
       }));
     } finally {
       setIsLoading(false);
@@ -392,15 +297,19 @@ const EditModal: React.FC<EditModalProps> = ({
   // Reset form and close modal
   const handleClose = () => {
     setFormData({
-      itemName: "",
-      ownerName: "",
-      ownerEmail: "",
-      ownerPhone: "",
+      name: "",
+      category: "",
+      description: "",
+      serialnumber: "",
+      founderEmail: "",
       location: "",
-      date: "",
-      itemSerial: "",
-      descrption: "",
-      itemImage: "",
+      phoneNumber: "",
+      firstName: "",
+      address: "",
+      province: "",
+      district: "",
+      lastName: "",
+      deviceimage: "",
     });
     setErrors({});
     onClose();
@@ -450,9 +359,14 @@ const EditModal: React.FC<EditModalProps> = ({
                     Item Image
                   </label>
                   <div className="flex items-center space-x-4">
-                    {formData.itemImage && (
+                    {formData.deviceimage && (
                       <img
-                        src={formData.itemImage}
+                        src={
+                          formData.deviceimage.startsWith("data:")
+                            ? formData.deviceimage
+                            : import.meta.env.VITE_API_BASE_URL +
+                              formData.deviceimage
+                        }
                         alt="Item preview"
                         className="h-16 w-16 rounded-md object-cover border border-gray-200"
                       />
@@ -466,9 +380,9 @@ const EditModal: React.FC<EditModalProps> = ({
                       />
                     </div>
                   </div>
-                  {errors.itemImage && (
+                  {errors.deviceimage && (
                     <p className="mt-1 text-sm text-red-600">
-                      {errors.itemImage}
+                      {errors.deviceimage}
                     </p>
                   )}
                 </div>
@@ -476,37 +390,35 @@ const EditModal: React.FC<EditModalProps> = ({
                 {/* Item Name */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Item Name 
+                    Item Name
                   </label>
                   <input
                     type="text"
-                    name="itemName"
-                    value={formData.itemName}
+                    name="name"
+                    value={formData.name}
                     onChange={handleInputChange}
                     className={`block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      errors.itemName ? "border-red-300" : "border-gray-300"
+                      errors.name ? "border-red-300" : "border-gray-300"
                     }`}
                     placeholder="Enter item name"
                   />
-                  {errors.itemName && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.itemName}
-                    </p>
+                  {errors.name && (
+                    <p className="mt-1 text-sm text-red-600">{errors.name}</p>
                   )}
                 </div>
 
-                {/* Founder Name */}
+                {/* First Name */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Founder Name
+                    First Name
                   </label>
                   <input
                     type="text"
-                    name="ownerName"
-                    value={formData.ownerName}
+                    name="firstName"
+                    value={formData.firstName}
                     onChange={handleInputChange}
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter founder name"
+                    placeholder="Enter first name"
                   />
                 </div>
 
@@ -517,33 +429,33 @@ const EditModal: React.FC<EditModalProps> = ({
                   </label>
                   <input
                     type="email"
-                    name="ownerEmail"
-                    value={formData.ownerEmail}
+                    name="founderEmail"
+                    value={formData.founderEmail}
                     onChange={handleInputChange}
                     className={`block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      errors.ownerEmail ? "border-red-300" : "border-gray-300"
+                      errors.founderEmail ? "border-red-300" : "border-gray-300"
                     }`}
                     placeholder="Enter founder email"
                   />
-                  {errors.ownerEmail && (
+                  {errors.founderEmail && (
                     <p className="mt-1 text-sm text-red-600">
-                      {errors.ownerEmail}
+                      {errors.founderEmail}
                     </p>
                   )}
                 </div>
 
-                {/* Founder Phone */}
+                {/* Phone Number */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Founder Phone
+                    Phone Number
                   </label>
                   <input
                     type="tel"
-                    name="ownerPhone"
-                    value={formData.ownerPhone}
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
                     onChange={handleInputChange}
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter founder phone"
+                    placeholder="Enter phone number"
                   />
                 </div>
 
@@ -569,65 +481,128 @@ const EditModal: React.FC<EditModalProps> = ({
                   )}
                 </div>
 
-                {/* Date Found */}
+                {/* Last Name */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Date Found
+                    Last Name
                   </label>
                   <input
-                    type="date"
-                    name="date"
-                    value={formData.date}
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
                     onChange={handleInputChange}
                     className={`block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      errors.date ? "border-red-300" : "border-gray-300"
+                      errors.lastName ? "border-red-300" : "border-gray-300"
                     }`}
+                    placeholder="Enter last name"
                   />
-                  {errors.date && (
-                    <p className="mt-1 text-sm text-red-600">{errors.date}</p>
+                  {errors.lastName && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.lastName}
+                    </p>
                   )}
+                </div>
+
+                {/* Category */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Category
+                  </label>
+                  <input
+                    type="text"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter item category"
+                  />
                 </div>
 
                 {/* Serial Number */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Serial Number *
+                    Serial Number
                   </label>
                   <input
                     type="text"
-                    name="itemSerial"
-                    value={formData.itemSerial}
+                    name="serialnumber"
+                    value={formData.serialnumber}
                     onChange={handleInputChange}
                     className={`block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      errors.itemSerial ? "border-red-300" : "border-gray-300"
+                      errors.serialnumber ? "border-red-300" : "border-gray-300"
                     }`}
                     placeholder="Enter serial number"
                   />
-                  {errors.itemSerial && (
+                  {errors.serialnumber && (
                     <p className="mt-1 text-sm text-red-600">
-                      {errors.itemSerial}
+                      {errors.serialnumber}
                     </p>
                   )}
+                </div>
+
+                {/* District */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    District
+                  </label>
+                  <input
+                    type="text"
+                    name="district"
+                    value={formData.district}
+                    onChange={handleInputChange}
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter district"
+                  />
+                </div>
+
+                {/* Province */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Province
+                  </label>
+                  <input
+                    type="text"
+                    name="province"
+                    value={formData.province}
+                    onChange={handleInputChange}
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter province"
+                  />
+                </div>
+
+                {/* Address */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Address
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter address"
+                  />
                 </div>
 
                 {/* Description */}
                 <div className="sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Description *
+                    Description
                   </label>
                   <textarea
-                    name="descrption"
-                    value={formData.descrption}
+                    name="description"
+                    value={formData.description}
                     onChange={handleInputChange}
                     rows={3}
                     className={`block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      errors.descrption ? "border-red-300" : "border-gray-300"
+                      errors.description ? "border-red-300" : "border-gray-300"
                     }`}
-                    placeholder="Enter detailed descrption of the item"
+                    placeholder="Enter detailed description of the item"
                   />
-                  {errors.descrption && (
+                  {errors.description && (
                     <p className="mt-1 text-sm text-red-600">
-                      {errors.descrption}
+                      {errors.description}
                     </p>
                   )}
                 </div>
@@ -669,68 +644,6 @@ const EditModal: React.FC<EditModalProps> = ({
   );
 };
 
-const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onDelete }) => {
-  return (
-    <div className="bg-white rounded-lg shadow mb-4 p-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <img
-            src={item.itemImage}
-            alt={item.itemName}
-            className="w-12 h-12 rounded-md object-cover mr-4"
-          />
-          <div>
-            <h3 className="text-sm font-medium text-gray-900">
-              {item.itemName}
-            </h3>
-            <p className="text-xs text-gray-500">{item.ownerName}</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
-        <div>
-          <p className="text-gray-500">Location:</p>
-          <p className="font-medium">{item.location}</p>
-        </div>
-        <div>
-          <p className="text-gray-500">Date Found:</p>
-          <p className="font-medium">{item.dateFound || item.date}</p>
-        </div>
-        <div>
-          <p className="text-gray-500">Found By:</p>
-          <p className="font-medium">{item.foundBy || item.ownerName}</p>
-        </div>
-        <div>
-          <p className="text-gray-500">Contact:</p>
-          <p className="font-medium truncate">
-            {item.contact || item.ownerPhone}
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-2 text-xs">
-        <p className="text-gray-500">Description:</p>
-        <p className="font-medium text-gray-900">{item.descrption}</p>
-      </div>
-
-      <div className="mt-4 flex justify-end space-x-2">
-        <button
-          onClick={() => onEdit(item)}
-          className="p-2 text-blue-600 hover:bg-blue-50 rounded-full"
-        >
-          <Edit size={16} />
-        </button>
-        <button
-          onClick={() => onDelete(item.id)}
-          className="p-2 text-red-600 hover:bg-red-50 rounded-full"
-        >
-          <Trash2 size={16} />
-        </button>
-      </div>
-    </div>
-  );
-};
 
 // Mock ReportLostItem component
 const ReportLostItem: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
@@ -740,47 +653,44 @@ const ReportLostItem: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
-        <h2 className="text-lg font-semibold mb-4">Report Lost Item</h2>
-        <p className="text-gray-600 mb-4">
-          This is a placeholder for the Report Lost Item form.
-        </p>
+    <div className="fixed inset-0 bg-[rgba(49,49,49,0.8)] bg-opacity-80  flex justify-center items-start sm:items-center z-1000 p-2 sm:p-4 ">
+      <div className="relative w-full max-w-[320px] xs:max-w-[380px] sm:max-w-[400px] md:max-w-[450px]">
+        {/* Close button */}
         <button
+          className="absolute right-0 top-0 z-20 flex items-center justify-center h-8 w-8 bg-blue-700 text-white hover:bg-blue-800 transition-colors -mt-2 -mr-2 rounded-md shadow-lg"
           onClick={onClose}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          aria-label="Close"
         >
-          Close
+          <X size={18} className="sm:w-5 sm:h-5" />
         </button>
+        <FoundItemForm
+        />
       </div>
     </div>
   );
 };
 
-export default function AdminLostItem(): JSX.Element {
-  // Use static data instead of context
-  const allItems: LostItem[] = staticLostItems;
+export default function AdminFoundItem(): JSX.Element {
+  
+  const { data,refetch } = useGetFounditemQuery();
+  
+
+  const allItems: LostItem[] = data || [];
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(3);
+  const [itemsPerPage] = useState<number>(3);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
 
   // Modal and form state
-  const [selected, setSelected] = useState<LostItem>({} as LostItem);
-  const [open, setOpen] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
-  const [tourToDelete, setTourToDelete] = useState<LostItem | null>(null);
 
   // Filter items based on search term
-  const filteredItems = allItems.filter((item) => {
+  const filteredItems = allItems?.filter((item) => {
     const matchesSearch =
-      item.itemName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.foundBy?.toLowerCase().includes(searchTerm.toLowerCase());
+      item.founderEmail?.toLowerCase().includes(searchTerm.toLowerCase());
 
     return matchesSearch;
   });
@@ -788,14 +698,10 @@ export default function AdminLostItem(): JSX.Element {
   // Calculate pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  const currentItems = filteredItems?.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredItems?.length / itemsPerPage);
   const [itemToEdit, setItemToEdit] = useState<LostItem | null>(null);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
-
-  const [isReportModalOpen, setIsReportModalOpen] = useState<boolean>(false);
-  const openReportModal = () => setIsReportModalOpen(true);
-  const closeReportModal = () => setIsReportModalOpen(false);
 
   // Pagination handlers
   const goToFirstPage = () => setCurrentPage(1);
@@ -805,48 +711,69 @@ export default function AdminLostItem(): JSX.Element {
     setCurrentPage((prev) => Math.min(totalPages, prev + 1));
   const goToLastPage = () => setCurrentPage(totalPages);
 
-  // Form handling
 
-  // Edit handler
-  const handleEditClick = (item: LostItem) => {
-    setSelected(item);
-    setOpen(true);
-  };
 
-  // Delete handlers
-  const handleConfirmDelete = async (id: string) => {
-    // Mock confirmation dialog
-    const confirmed = window.confirm("Do you want to delete this item?");
-    if (confirmed) {
+const [deleteProduct] = useDeleteFounditemMutation();
+
+ const handleConfirmDelete = (id: string) => {
+  Notiflix.Confirm.show(
+    "Delete Confirmation",
+    "Do you want to delete this item?",
+    "Delete",
+    "Cancel",
+    async () => {
       try {
-        setIsLoading(true);
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        console.log("Item deleted:", id);
-        setIsLoading(false);
-        // In a real app, you would update the state or refetch data
-        alert("Item deleted successfully");
-      } catch (error) {
-        setIsLoading(false);
-        console.log(error);
-        alert("Failed to delete item");
+        console.log("Attempting to delete lost item with ID:", id);
+
+        const result = await deleteProduct(id).unwrap();
+
+        console.log("Delete successful:", result);
+        toast.success("FoundItem deleted successfully!", {
+          autoClose: 2000,
+        });
+
+        // Force refetch to update UI immediately
+        await refetch();
+      } catch (error: any) {
+        console.error("Delete failed:", error);
+
+        let errorMessage = "Failed to delete item. Please try again.";
+
+        if (error?.status === 404) {
+          errorMessage = "Item not found. It may have already been deleted.";
+        } else if (error?.status === 403) {
+          errorMessage = "You don't have permission to delete this item.";
+        } else if (error?.status === 500) {
+          errorMessage = "Server error. Please try again later.";
+        } else if (error?.data?.message) {
+          errorMessage = error.data.message;
+        } else if (error?.message) {
+          errorMessage = error.message;
+        }
+
+        toast.error(errorMessage);
       }
+    },
+    () => {
+      console.log("Delete cancelled");
+    },
+    {
+      width: "320px",
+      borderRadius: "8px",
+      titleColor: "#ff5549",
+      okButtonBackground: "#ff5549",
     }
-  };
+  );
+};
 
-  const handleDeleteClick = (item: LostItem) => {
-    if (item && item._id) {
-      handleConfirmDelete(item._id);
-    } else {
-      console.error("Item or item ID is missing");
-      alert("Cannot delete item - ID is missing");
-    }
-  };
-
-  const handleCancelDelete = () => {
-    setShowDeleteConfirm(false);
-    setTourToDelete(null);
-  };
+const handleDeleteClick = (item: LostItem) => {
+  if (item && item.id) {
+    handleConfirmDelete(item.id);
+  } else {
+    console.error("Item or item ID is missing");
+    toast.error("Cannot delete item - ID is missing");
+  }
+};
 
   const handleEdit = (item: LostItem) => {
     setItemToEdit(item);
@@ -859,12 +786,24 @@ export default function AdminLostItem(): JSX.Element {
     setItemToEdit(null);
   };
 
+
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openReportModal = () => {
+      setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+      setIsModalOpen(false);
+    };
+
  
   return (
-    <div className="w-full max-w-7xl mx-auto p-3 sm:p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 sm:mb-2">
+    <div className="max-w-xl md:max-w-3xl lg:max-w-7xl xl:max-w-7xl mx-auto p-3 sm:p-6 bg-white shadow-lg rounded-lg">
+      <h5 className="text-size-xl font-bold text-primaryColor-100 mb-2 sm:mb-2">
         Found Items
-      </h1>
+      </h5>
 
       {/* Search and filters */}
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4 sm:mb-6">
@@ -896,7 +835,7 @@ export default function AdminLostItem(): JSX.Element {
       </div>
 
       {/* Desktop view - Table */}
-      <div className="hidden lg:block">
+      <div className="block">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -923,13 +862,13 @@ export default function AdminLostItem(): JSX.Element {
                   scope="col"
                   className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Date Lost
+                  Serial Number
                 </th>
                 <th
                   scope="col"
                   className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Lost By
+                  Found By
                 </th>
                 <th
                   scope="col"
@@ -940,15 +879,17 @@ export default function AdminLostItem(): JSX.Element {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {currentItems.map((item) => (
-                <tr key={item._id || item.id} className="hover:bg-gray-50">
+              {currentItems?.map((item) => (
+                <tr key={item.id || item.id} className="hover:bg-gray-50">
                   <td className="px-4 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 h-10 w-10">
                         <img
                           className="h-10 w-10 rounded-md object-cover"
-                          src={item.itemImage}
-                          alt={item.itemName}
+                          src={
+                            item.deviceimage
+                          }
+                          alt={item.name}
                           onError={(e) => {
                             (e.target as HTMLImageElement).src =
                               "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNiAxNkMyMC40MTgzIDE2IDI0IDE5LjU4MTcgMjQgMjRDMjQgMjguNDE4MyAyMC40MTgzIDMyIDE2IDMyQzExLjU4MTcgMzIgOCAyOC40MTgzIDggMjRDOCAxOS41ODE3IDExLjU4MTcgMTYgMTYgMTZaIiBmaWxsPSIjOUM5Qzk3Ii8+CjxwYXRoIGQ9Ik0yMS4zMzMzIDIxLjMzMzNWMjIuNjY2N0gyMi42NjY3VjI0SDIxLjMzMzNWMjUuMzMzM0gyMFYyNEgxOC42NjY3VjIyLjY2NjdIMjBWMjEuMzMzM0gyMS4zMzMzWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+";
@@ -957,31 +898,31 @@ export default function AdminLostItem(): JSX.Element {
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">
-                          {item.itemName}
+                          {item.name}
                         </div>
-                        <div className="text-sm w-0.5 text-gray-500">
-                          {item.ownerEmail}
+                        <div className="text-xs w-[15 px] text-gray-500">
+                          {item.founderEmail}
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-4 py-4">
                     <div className="text-sm text-gray-900 max-w-xs">
-                      {item.descrption}
+                      {item.description}
                     </div>
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">{item.location}</div>
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{item.date}</div>
+                    <div className="text-sm text-gray-900">
+                      {item.serialnumber}
+                    </div>
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">
-                      {item.ownerName}
-                    </div>
+                    <div className="text-sm text-gray-900">{item.lastName}</div>
                     <div className="text-sm text-gray-500">
-                      {item.ownerPhone}
+                      {item.phoneNumber}
                     </div>
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap text-center">
@@ -1007,99 +948,6 @@ export default function AdminLostItem(): JSX.Element {
             </tbody>
           </table>
         </div>
-      </div>
-
-      {/* Tablet view - Cards */}
-      <div className="hidden sm:block lg:hidden">
-        <div className="grid gap-4">
-          {currentItems.length > 0 ? (
-            currentItems.map((item) => (
-              <div
-                key={item._id || item.id}
-                className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-4 flex-1">
-                    <div className="flex-shrink-0">
-                      <img
-                        className="h-16 w-16 rounded-md object-cover"
-                        src={item.itemImage}
-                        alt={item.itemName}
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src =
-                            "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yNiAyNkMzNC44MzY2IDI2IDQyIDMzLjE2MzQgNDIgNDJDNDIgNTAuODM2NiAzNC44MzY2IDU4IDI2IDU4QzE3LjE2MzQgNTggMTAgNTAuODM2NiAxMCA0MkMxMCAzMy4xNjM0IDE3LjE2MzQgMjYgMjYgMjZaIiBmaWxsPSIjOUM5Qzk3Ii8+CjxwYXRoIGQ9Ik0zNC4xMzMzIDM0LjEzMzNWMzYuMjY2N0gzNi4yNjY3VjM4LjRIMzQuMTMzM1Y0MC41MzMzSDMzLjA2NjdWMzguNEgzMC40VjM2LjI2NjdIMzMuMDY2N1YzNC4xMzMzSDM0LjEzMzNaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4=";
-                        }}
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <h3 className="text-lg font-medium text-gray-900">
-                            {item.itemName}
-                          </h3>
-                          <p className="text-sm  text-gray-500">
-                            {item.ownerEmail}
-                          </p>
-                        </div>
-                        <p className="text-sm text-gray-500 ml-2">
-                          {item.date}
-                        </p>
-                      </div>
-                      <p className="text-sm text-gray-700 mb-2">
-                        {item.descrption}
-                      </p>
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                          <span className="text-gray-500">Location:</span>
-                          <p className="text-gray-900">{item.location}</p>
-                        </div>
-                        <div>
-                          <span className="text-gray-500">Found by:</span>
-                          <p className="text-gray-900">{item.foundBy}</p>
-                          <p className="text-gray-500 text-xs">
-                            {item.ownerPhone}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col space-y-2 ml-4">
-                    <button
-                      onClick={() => handleEdit(item)}
-                      className="text-blue-600 hover:text-blue-800 p-2 rounded-md hover:bg-blue-50 transition-colors"
-                      title="Edit item"
-                    >
-                      <Edit size={18} />
-                    </button>
-                    <button
-                      onClick={() => handleDeleteClick(item)}
-                      className="text-red-600 hover:text-red-800 p-2 rounded-md hover:bg-red-50 transition-colors"
-                      title="Delete item"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="py-6 text-center text-gray-500">
-              No items found matching your search criteria
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Mobile Card Layout */}
-      <div className="md:hidden space-y-4">
-        {currentItems.map((item) => (
-          <ItemCard
-            key={item.id}
-            item={item}
-            onEdit={handleEdit}
-            onDelete={handleConfirmDelete}
-          />
-        ))}
       </div>
 
       {/* Pagination */}
@@ -1136,13 +984,13 @@ export default function AdminLostItem(): JSX.Element {
             <p className="text-sm text-gray-700">
               Showing{" "}
               <span className="font-medium">
-                {filteredItems.length > 0 ? indexOfFirstItem + 1 : 0}
+                {filteredItems?.length > 0 ? indexOfFirstItem + 1 : 0}
               </span>{" "}
               to{" "}
               <span className="font-medium">
-                {Math.min(indexOfLastItem, filteredItems.length)}
+                {Math.min(indexOfLastItem, filteredItems?.length)}
               </span>{" "}
-              of <span className="font-medium">{filteredItems.length}</span>{" "}
+              of <span className="font-medium">{filteredItems?.length}</span>{" "}
               results
             </p>
           </div>
@@ -1214,7 +1062,10 @@ export default function AdminLostItem(): JSX.Element {
         </div>
       </div>
 
-      <ReportLostItem isOpen={isReportModalOpen} onClose={closeReportModal} />
+      <ReportLostItem
+        isOpen={isModalOpen}
+        onClose={closeModal}
+      />
 
       {/* Edit Modal */}
       <EditModal

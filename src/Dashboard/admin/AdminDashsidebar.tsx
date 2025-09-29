@@ -4,12 +4,14 @@ import {
   MdHome,
   MdOutlineAppSettingsAlt,
   MdOutlineLogout,
-  MdPayment
+  MdPayment,
+  MdReport
 } from "react-icons/md";
 import logo from '../../assets/images/logo.jpeg'
 import { TbUsers } from "react-icons/tb";
 import { LuMessageSquareText } from "react-icons/lu";
 import { CgFormatCenter } from "react-icons/cg";
+import { useAuth } from "../../context/AuthContext";
 interface ToggleProps{
   isOpen: any;
   toggleSidebar:any
@@ -50,8 +52,13 @@ const AdminDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
     },
     {
       name: "Matched",
-      path: "adminsetting",
+      path: "match",
       icon: <CgFormatCenter className="h-5 w-5 mr-3" />,
+    },
+    {
+      name: "Reports",
+      path: "report",
+      icon: <MdReport className="h-5 w-5 mr-3" />,
     },
   ];
 
@@ -64,13 +71,14 @@ const AdminDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
     }
   };
 
+const { logout } = useAuth();
   return (
     <aside
       className={`bg-white w-50 shadow-md flex-shrink-0 transition-all duration-300 ease-in-out fixed md:relative h-full z-40 ${
         isOpen ? "translate-x-0" : "-translate-x-64"
       }`}
     >
-      <nav className="p-4 h-full flex flex-col gap-7 overflow-y-auto">
+      <nav className="p-4 h-full flex flex-col gap-6 overflow-y-auto">
         <img src={logo} alt="" className="w-30 h-10 mt-4" />
         <ul className="space-y-2">
           {menuItems.map((item, index) => {
@@ -95,9 +103,11 @@ const AdminDashSidebar:React.FC<ToggleProps> = ({ isOpen, toggleSidebar }) => {
             );
           })}
         </ul>
-        <div className=" text-red-500 flex items-center mt-20 ml-6">
+        <div className=" text-red-500 flex items-center mt-17 ml-6">
           <MdOutlineLogout className=" h-5 w-5 mr-3" />
-          <Link to={"/"} className=" mb-1">
+          <Link
+            onClick={logout}
+            to={"#"} className=" mb-1">
             Logout
           </Link>
         </div>

@@ -1,140 +1,224 @@
-// ItemsGrid.tsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import homei from "../assets/images/image1-24.jpg";
-import LostItemCard from "../hooks/useItem";
-// LostItemsContext.tsx
-import type { LostItem} from "../type/type";
-import imag1 from '../assets/images/Frame.png'
-import imag2 from'../assets/images/Frame 401 (2).png'
-import imag3 from '../assets/images/imag1.jpg'
-import imag4 from '../assets/images/Frame 401 (4).png'
-import imag5 from '../assets/images/Frame 401.png'
-import imag6 from "../assets/images/Tablet.jpg";
-import imag7 from "../assets/images/mouse.jpg";
-import imag8 from "../assets/images/laptop.jpg";
-import imag9 from "../assets/images/phonen.jpg";
+import { Search, ChevronDown } from "lucide-react";
+import type { Founditem } from "../type/type";
+import { useGetFounditemQuery } from "../Api/founditem";
+import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
+import ReactPaginate from "react-paginate";
+import FoundItemCard from "../hooks/FounditemCard";
 
-  const FoundItem: React.FC = () => {
-  
+const FoundItem: React.FC = () => {
+  const { data } = useGetFounditemQuery();
+  const [pagenumber, setPagenumber] = useState(0);
+  const bookpage = 8;
+  const pagevisited = pagenumber * bookpage;
+  const displayFoundItem = data?.slice(pagevisited, pagevisited + bookpage);
+  const changepage = ({ selected }: any) => {
+    setPagenumber(selected);
+  }
 
-    const lostItems: LostItem[] = [
-      {
-        id: 1,
-        title: "White i POD",
-        location: "JFK Terminal 8, Jamaica, New York, USA",
-        image: imag5,
-        type: "ipod",
-      },
-      {
-        id: 2,
-        title: "Laptop Lenovo i7",
-        location: "JFK Terminal 8, Jamaica, New York, USA",
-        image: imag1,
-        type: "laptop",
-      },
-      {
-        id: 3,
-        title: "I Phone 7 plus",
-        location: "JFK Terminal 8, Jamaica, New York, USA",
-        image: imag3,
-        type: "phone",
-      },
-      {
-        id: 4,
-        title: "White Tablet",
-        location: "JFK Terminal 8, Jamaica, New York, USA",
-        image: imag6,
-        type: "tablet",
-      },
-      {
-        id: 5,
-        title: "Mouse",
-        location: "JFK Terminal 8, Jamaica, New York, USA",
-        image: imag7,
-        type: "wallet",
-      },
-      {
-        id: 6,
-        title: "Phone",
-        location: "JFK Terminal 8, Jamaica, New York, USA",
-        image: imag9,
-        type: "charger",
-      },
-      {
-        id: 7,
-        title: "Adapter",
-        location: "JFK Terminal 8, Jamaica, New York, USA",
-        image: imag4,
-        type: "adapter",
-      },
-      {
-        id: 8,
-        title: "Telphone Spark",
-        location: "JFK Terminal 8, Jamaica, New York, USA",
-        image: imag2,
-        type: "camera",
-      },
-      {
-        id: 8,
-        title: "Laptop",
-        location: "JFK Terminal 8, Jamaica, New York, USA",
-        image: imag8,
-        type: "camera",
-      },
-    ];
+  // Default to [] to avoid undefined issues
+  const lostItems: Founditem[] =displayFoundItem ?? [];
 
- 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchBy, setSearchBy] = useState<"title" | "location">("title");
+  const [showSearchOptions, setShowSearchOptions] = useState(false);
+  const [filteredItems, setFilteredItems] = useState<Founditem[]>(lostItems);
+
+  // Rwandan districts for location filtering
+  const rwandanDistricts = [
+    "Kicukiro", "Gasabo", "Nyarugenge", "Bugesera", "Kamonyi", "Rwamagana",
+    "Gicumbi", "Ruhango", "Nyamagabe", "Nyanza", "Kayonza", "Ngoma",
+    "Nyagatare", "Gatsibo", "Rubavu", "Rutsiro", "Karongi", "Nyabihu",
+    "Ngororero", "Rusizi", "Muhanga", "Huye", "Nyamasheke", "Rulindo"
+  ];
+
+  // Search filtering
+  useEffect(() => {
+    if (!searchTerm.trim()) {
+      setFilteredItems(lostItems);
+      return;
+    }
+
+    const searchLower = searchTerm.toLowerCase();
+
+    const results = lostItems.filter((item: Founditem) => {
+      if (searchBy === "title") {
+        return item.name?.toLowerCase().includes(searchLower);
+      } else {
+        return item.location?.toLowerCase().includes(searchLower);
+      }
+    });
+
+    setFilteredItems(results);
+  }, [searchTerm, searchBy, lostItems]);
+
+  const clearSearch = () => setSearchTerm("");
 
   return (
     <div>
       <div
-        className="h-screen flex flex-col items-center justify-center gap-10 py-20 px-4 md:px-16 lg:px-60 text-center text-white bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900"
+        className="relative h-[70vh] md:h-[75vh] lg:h-[80vh] flex flex-col items-center justify-center gap-10 px-4 md:px-16 lg:px-60 text-center text-white overflow-hidden"
         style={{
-          background: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${homei})`,
+          background: `linear-gradient(rgba(41, 108, 181, 0.65), rgba(2, 17, 32, 0.84)), url(${homei})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
       >
-       <div className="  text-white grid gap-5  ">
-          <h1 className=" font-bold text-size-2xl">
-            Looking for Your Device?
-          </h1>
-          <p className=" text-size-md">
-            Reporting your lost or stolen device helps protect everyone by
-            making it harder to resell and easier for a finder to return it to
-            you.
-          </p>{" "}
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[3px]"></div>
+        <div className="relative z-10 font-medium text-[20px] sm:text-[25px] text-white leading-tight mb-3 sm:mb-3">
+          <div className="text-white grid gap-5">
+            <p className=" font-normal  mt-2 text-3xl leading-snug drop-shadow-md">
+              Looking for Your Device?
+            </p>
+            <p className="text-lg md:text-xl">
+              Reporting your lost or stolen device helps protect everyone by
+              making it harder to resell and easier for a finder to return it to
+              you.
+            </p>
           </div>
+        </div>
       </div>
 
       <div className="w-full p-8">
         <div className="max-w-7xl mx-auto mb-8 space-y-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold"> Browse Found Items </h1>
-            <input
-              placeholder="Search Found Items"
-              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <h1 className="text-2xl font-bold">Browse Found Items</h1>
           </div>
-          <p>
+
+          <p className="text-gray-600">
             Statistics show 85% of lost property (phones, bags, pets, luggage,
             etc.) is in honest hands. Let Lostings help you find the
-            property/item(s) you have lost. Be smart and submit your lost
-            property with our lost and found department toady!
+            property/item(s) you have lost. Be smart and submit your lost
+            property with our lost and found department today!
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6  items-center justify-items-center place-items-center mx-auto">
-          {lostItems.map((item) => (
-            <div className="w-full max-w-sm" key={item.id}>
-              <LostItemCard
-                title="Item Found"
-                item={item}
+        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+          <div className="relative flex-1 flex">
+            <div className="relative">
+              <button
+                onClick={() => setShowSearchOptions(!showSearchOptions)}
+                className="h-full px-4 py-2 border border-gray-300 rounded-l-md bg-gray-50 hover:bg-gray-100 flex items-center gap-1 text-sm font-medium"
+              >
+                {searchBy === "title" ? "Title" : "Location"}
+                <ChevronDown className="w-4 h-4" />
+              </button>
+
+              {showSearchOptions && (
+                <div className="absolute top-full left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                  <button
+                    onClick={() => {
+                      setSearchBy("title");
+                      setShowSearchOptions(false);
+                    }}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
+                  >
+                    Search by Title
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSearchBy("location");
+                      setShowSearchOptions(false);
+                    }}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
+                  >
+                    Search by Location
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Search Input */}
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                placeholder={
+                  searchBy === "title"
+                    ? "Search by item title..."
+                    : "Search by district..."
+                }
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-r-md rounded-l-none focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
               />
             </div>
-          ))}
+          </div>
+        </div>
+        {/* Results Count */}
+        <div className="mb-3 mt-2 flex justify-between items-center">
+          <p className="text-gray-600">
+            {filteredItems.length}{" "}
+            {filteredItems.length === 1 ? "item" : "items"} found
+            {searchTerm ? ` matching "${searchTerm}" in ${searchBy}` : ""}
+          </p>
+
+          {searchTerm && (
+            <button
+              onClick={clearSearch}
+              className="text-sm text-blue-600 hover:text-blue-800"
+            >
+              Clear search
+            </button>
+          )}
+        </div>
+
+        {/* Results Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4  gap-4 sm:gap-6 items-center justify-items-center place-items-center mx-auto">
+          {filteredItems.length > 0 ? (
+            filteredItems.map((item:any) => (
+              <div key={item.id} className="w-full max-w-sm">
+                <FoundItemCard
+                  id={item.id}
+                  title={item.name} // change to item.title if API returns title
+                  image={item.deviceimage}
+                  location={item.location}
+                />
+              </div>
+            ))
+          ) : (
+            <div className="col-span-full text-center py-12">
+              <div className="text-gray-500 text-lg mb-2">No items found</div>
+              <p className="text-gray-400">
+                {searchTerm
+                  ? `No items found matching "${searchTerm}" in ${searchBy}`
+                  : "No found items have been reported yet"}
+              </p>
+
+              {searchBy === "location" && searchTerm && (
+                <div className="mt-4">
+                  <p className="text-sm text-gray-500 mb-2">
+                    Popular districts in Rwanda:
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {rwandanDistricts.slice(0, 8).map((district) => (
+                      <button
+                        key={district}
+                        onClick={() => setSearchTerm(district)}
+                        className="text-xs px-3 py-1 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors"
+                      >
+                        {district}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
+      <ReactPaginate
+        className=" flex justify-center items-center gap-2 mb-6"
+        pageCount={Math.ceil(data?.length / bookpage)}
+        previousLabel={<TbPlayerTrackPrevFilled />}
+        nextLabel={<TbPlayerTrackNextFilled />}
+        onPageChange={changepage}
+        containerClassName="pagination"
+        previousLinkClassName="prevBtn text-2xl text-gray-500"
+        nextLinkClassName="nextBtn text-2xl text-gray-500"
+        disabledClassName="disabled"
+        activeClassName="paginationactve bg-primaryColor-100 text-white h-5 w-5 rounded-sm flex justify-center items-center"
+      ></ReactPaginate>
     </div>
   );
 };
